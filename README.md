@@ -1,0 +1,295 @@
+# 🚀 ForgeMind AI
+
+**ForgeMind AI** is an intelligent multi-agent software engineering assistant designed to help developers plan, design, build, test, and document software projects using Artificial Intelligence.
+
+Built for the **AMD Developer Hackathon: ACT II**, ForgeMind AI leverages a modern full-stack architecture with **FastAPI**, **React**, and AI-powered agents capable of generating software architectures, development plans, documentation, and code.
+
+---
+
+## 🌟 Features
+
+- 🏗️ AI Architect Agent
+    - Generates software architectures
+    - Recommends technology stacks
+    - Suggests project folder structures
+    - Designs API layouts
+    - Creates database recommendations
+
+- 💻 AI Coding Assistant *(Coming Soon)*
+    - Generate production-ready code
+    - Explain code
+    - Refactor existing code
+
+- 🧪 AI Test Generator *(Coming Soon)*
+    - Unit Tests
+    - Integration Tests
+    - API Testing
+
+- 🐞 AI Debugger *(Coming Soon)*
+    - Detect bugs
+    - Suggest fixes
+    - Improve performance
+
+- 📚 AI Documentation Agent *(Coming Soon)*
+    - README generation
+    - API documentation
+    - Project documentation
+
+- 📋 AI Project Planner *(Coming Soon)*
+    - Sprint planning
+    - User stories
+    - Task generation
+    - Development roadmap
+
+---
+
+# 🏛️ Architecture
+
+```
+                React Frontend
+                      │
+                      ▼
+              FastAPI Backend
+                      │
+          ┌───────────┴───────────┐
+          │                       │
+    Architect Agent         Future Agents
+          │
+          ▼
+      LLM Service
+          │
+          ▼
+ AMD Accelerated AI Models
+```
+
+---
+
+# 🛠️ Tech Stack
+
+### Frontend
+
+- React
+- Vite
+- JavaScript
+
+### Backend
+
+- FastAPI
+- Python
+- Uvicorn
+
+### AI
+
+- Large Language Models (LLMs)
+- Modular Agent Architecture
+- Prompt Engineering
+
+### DevOps
+
+- Git
+- GitHub
+- Docker *(Planned)*
+
+---
+
+# 📂 Project Structure
+
+```
+forgemind-ai/
+│
+├── backend/
+│   ├── app/
+│   │   ├── agents/
+│   │   ├── api/
+│   │   ├── core/
+│   │   ├── models/
+│   │   ├── prompts/
+│   │   ├── services/
+│   │   ├── utils/
+│   │   └── main.py
+│   │
+│   ├── requirements.txt
+│   └── .env
+│
+├── frontend/
+│   └── src/
+│
+├── docker/
+│
+├── docs/
+│
+└── README.md
+```
+
+---
+
+# 🚀 Getting Started
+
+## Clone the repository
+
+```bash
+git clone https://github.com/NeoPhukubye/forgemind-ai.git
+
+cd forgemind-ai
+```
+
+---
+
+## Backend Setup
+
+Create a virtual environment
+
+```bash
+python3 -m venv venv
+```
+
+Activate it
+
+Linux / macOS
+
+```bash
+source venv/bin/activate
+```
+
+Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+Run the server
+
+```bash
+uvicorn app.main:app --reload
+```
+
+Open
+
+```
+http://127.0.0.1:8000/docs
+```
+
+---
+
+## Frontend Setup
+
+```bash
+cd frontend
+
+npm install
+
+npm run dev
+```
+
+Open
+
+```
+http://localhost:5173
+```
+
+---
+
+# 📡 API Endpoints
+
+## Root
+
+```
+GET /
+```
+
+Returns a welcome message.
+
+---
+
+## Health Check
+
+```
+GET /health
+```
+
+Returns the application status.
+
+---
+
+## Architect Agent
+
+```
+GET /architect/{project_name}
+```
+
+Example
+
+```
+GET /architect/FoodDeliveryApp
+```
+
+Example Response
+
+```json
+{
+  "project": "FoodDeliveryApp",
+  "architecture": [
+    "Frontend (React)",
+    "Backend (FastAPI)",
+    "Database (PostgreSQL)",
+    "AI Layer",
+    "Docker Deployment"
+  ],
+  "message": "Architecture generated successfully"
+}
+```
+
+---
+
+# 🎯 Roadmap
+
+- [x] FastAPI backend
+- [x] React frontend
+- [x] Architect Agent
+- [x] Swagger API documentation
+- [ ] AI model integration
+- [ ] Coder Agent
+- [ ] Debugger Agent
+- [ ] Test Generator
+- [ ] Documentation Agent
+- [ ] Planner Agent
+- [ ] Docker deployment
+- [ ] AMD GPU optimization
+- [ ] Authentication
+- [ ] Project dashboard
+
+---
+
+# 🏆 Hackathon
+
+This project is being developed for the **AMD Developer Hackathon: ACT II**, focusing on building AI agents and high-performance AI applications optimized for AMD GPU infrastructure.
+
+---
+
+# 🤝 Contributing
+
+Contributions, ideas, and feedback are welcome.
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Open a Pull Request
+
+---
+
+# 👩‍💻 Author
+
+**Neo Phukubye**
+
+Software Engineering Student at **WeThinkCode_**
+
+Passionate about Artificial Intelligence, Software Engineering, Cloud Computing, and Building AI-Powered Developer Tools.
+
+GitHub:
+https://github.com/NeoPhukubye
+
+---
+
+# 📄 License
+
+This project is released under the MIT License.
