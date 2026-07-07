@@ -118,12 +118,16 @@ forgemind-ai/
 │
 ├── docs/
 │
+├── USER_GUIDE.md
+│
 └── README.md
 ```
 
 ---
 
 # 🚀 Getting Started
+
+For complete setup, run, API, and troubleshooting instructions, see [USER_GUIDE.md](USER_GUIDE.md).
 
 ## Clone the repository
 
@@ -140,6 +144,7 @@ cd forgemind-ai
 Create a virtual environment
 
 ```bash
+cd backend
 python3 -m venv venv
 ```
 
@@ -155,6 +160,15 @@ Install dependencies
 
 ```bash
 pip install -r requirements.txt
+```
+
+Create `backend/.env` from the project root or `.env` from inside `backend/`:
+
+```env
+FIREWORKS_API_KEY=your_real_fireworks_api_key
+FIREWORKS_BASE_URL=https://api.fireworks.ai/inference/v1
+FIREWORKS_MODEL=accounts/fireworks/models/gemma-3-12b-it
+ENVIRONMENT=development
 ```
 
 Run the server
