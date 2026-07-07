@@ -19,8 +19,11 @@ app.add_middleware(
 orchestrator = SecurityOrchestrator()
 app.include_router(api_router)
 
+
 class CodePayload(BaseModel):
     code: str
+
+
 
 @app.get("/")
 def root():
@@ -31,6 +34,7 @@ def root():
         "model": settings.fireworks_model,
         "message": "Gemma-powered hackathon backend is running.",
     }
+
 
 @app.get("/health")
 def health():
@@ -43,6 +47,7 @@ def health():
         "fireworks_configured": bool(settings.fireworks_api_key),
     }
 
+
 @app.post("/api/analyze")
 async def analyze_code(payload: CodePayload):
     if not payload.code.strip():
@@ -53,4 +58,4 @@ async def analyze_code(payload: CodePayload):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)
