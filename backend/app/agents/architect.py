@@ -37,6 +37,7 @@ class ArchitectAgent:
             "summary": result.get("summary", ""),
             "tech_stack": result.get("tech_stack", {}),
             "folder_structure": result.get("folder_structure", []),
+            "architecture": result.get("folder_structure", []),
             "api_endpoints": result.get("api_endpoints", []),
             "risks": result.get("risks", []),
             "message": f"Architecture generated for {project_name}",

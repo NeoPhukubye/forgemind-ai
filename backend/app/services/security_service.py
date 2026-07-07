@@ -1,17 +1,23 @@
-from app.services.llm_service import LLMService
+from app.services.llm_service import LLMServiceError, get_llm_service
+
 
 class SecurityOrchestrator:
-    def __init__(self):
-        self.llm = LLMService()
-
     async def analyze_and_patch(self, vulnerable_code: str) -> dict:
+        try:
+            llm = get_llm_service()
+        except LLMServiceError as exc:
+            return {"error": str(exc)}
+
         # Step 1: Architect Agent assesses vulnerability surface
         architect_prompt = (
             "You are an expert Application Security Architect. Analyze the provided code snippet "
             "for critical security vulnerabilities (e.g., OWASP Top 10, Injection, Broken Auth). "
             "Output your findings clearly in Markdown format with a severity rating (High/Medium/Low)."
         )
-        architecture_report = await self.llm.run_agent(architect_prompt, vulnerable_code)
+        try:
+            architecture_report = await llm.run_agent(architect_prompt, vulnerable_code)
+        except LLMServiceError as exc:
+            return {"error": str(exc)}
 
         # Step 2: Generator Agent writes the precise code fix
         generator_prompt = (
@@ -20,7 +26,10 @@ class SecurityOrchestrator:
             "Return ONLY the clean, refactored code block inside markdown code ticks. No extra explanation."
         )
         generator_input = f"Vulnerable Code:\n{vulnerable_code}\n\nReport:\n{architecture_report}"
-        patched_code = await self.llm.run_agent(generator_prompt, generator_input)
+        try:
+            patched_code = await llm.run_agent(generator_prompt, generator_input)
+        except LLMServiceError as exc:
+            return {"error": str(exc), "vulnerability_report": architecture_report}
 
         # Step 3: Reviewer Agent verifies formatting and ensures zero regressions
         reviewer_prompt = (
@@ -29,7 +38,14 @@ class SecurityOrchestrator:
             "Provide a brief, final verification verdict."
         )
         reviewer_input = f"Original:\n{vulnerable_code}\nPatched:\n{patched_code}"
-        review_verdict = await self.llm.run_agent(reviewer_prompt, reviewer_input)
+        try:
+            review_verdict = await llm.run_agent(reviewer_prompt, reviewer_input)
+        except LLMServiceError as exc:
+            return {
+                "error": str(exc),
+                "vulnerability_report": architecture_report,
+                "patched_code": patched_code,
+            }
 
         return {
             "vulnerability_report": architecture_report,
