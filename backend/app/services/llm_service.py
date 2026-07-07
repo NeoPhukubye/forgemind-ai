@@ -1,27 +1,30 @@
 import os
 from openai import OpenAI
-from app.core.config import settings # Assuming settings loads your .env
+from dotenv import load_dotenv
+
+load_dotenv()
 
 class LLMService:
     def __init__(self):
-        # Fireworks AI uses the standard OpenAI SDK wrapper
         self.client = OpenAI(
             api_key=os.getenv("FIREWORKS_API_KEY"),
-            base_url=os.getenv("FIREWORKS_BASE_URL", "https://api.fireworks.ai/inference/v1")
+            base_url=os.getenv("FIREWORKS_BASE_URL")
         )
-        # Using a fast, agent-friendly Gemma model
-        self.model = "accounts/fireworks/models/gemma-3-27b-it"
+        # Blazing fast, agent-optimized Gemma 4 model
+        self.model = "accounts/fireworks/models/gemma-4-26b-it"
 
-    async def generate_response(self, messages: list, temperature: float = 0.7) -> str:
+    async def run_agent(self, system_prompt: str, user_input: str, temperature: float = 0.2) -> str:
         try:
+            # Gemma 4 natively supports structured system prompts for tight constraint adherence
             response = self.client.chat.completions.create(
                 model=self.model,
-                messages=messages,
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_input}
+                ],
                 temperature=temperature,
                 max_tokens=2048
             )
             return response.choices[0].message.content
         except Exception as e:
-            # Add basic fallback or error handling for hackathon resilience
-            print(f"LLM Error: {e}")
-            return "Error generating response."
+            return f"Agent Execution Error: {str(e)}"
