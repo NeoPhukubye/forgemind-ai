@@ -20,22 +20,22 @@ Built for the **AMD Developer Hackathon: ACT II**, ForgeMind AI leverages a mode
     - Explain code
     - Refactor existing code
 
-- 🧪 AI Test Generator *(Coming Soon)*
+- 🧪 AI Test Generator
     - Unit Tests
     - Integration Tests
     - API Testing
 
-- 🐞 AI Debugger *(Coming Soon)*
+- 🐞 AI Debugger
     - Detect bugs
     - Suggest fixes
     - Improve performance
 
-- 📚 AI Documentation Agent *(Coming Soon)*
+- 📚 AI Documentation Agent
     - README generation
     - API documentation
     - Project documentation
 
-- 📋 AI Project Planner *(Coming Soon)*
+- 📋 AI Project Planner
     - Sprint planning
     - User stories
     - Task generation
@@ -261,14 +261,14 @@ Example Response
 - [x] React frontend
 - [x] Architect Agent
 - [x] Swagger API documentation
-- [ ] AI model integration
-- [ ] Coder Agent
-- [ ] Debugger Agent
-- [ ] Test Generator
-- [ ] Documentation Agent
-- [ ] Planner Agent
-- [ ] Docker deployment
-- [ ] AMD GPU optimization
+- [x] AI model integration
+- [x] Coder Agent
+- [x] Debugger Agent
+- [x] Test Generator
+- [x] Documentation Agent
+- [x] Planner Agent
+- [x] Docker deployment
+- [ ] AMD GPU optimization notes and benchmarks
 - [ ] Authentication
 - [ ] Project dashboard
 

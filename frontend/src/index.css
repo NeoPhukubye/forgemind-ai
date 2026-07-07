@@ -95,6 +95,106 @@ p {
   margin: 0;
 }
 
+.nav-button {
+  width: 100%;
+  min-height: 40px;
+  margin: 4px 0;
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.nav-button:hover,
+.nav-button.active {
+  color: var(--text-h);
+  background: var(--social-bg);
+  border-color: var(--border);
+}
+
+.agent-panel {
+  width: min(820px, 100%);
+  margin: 0 auto;
+  text-align: left;
+}
+
+.agent-panel h1 {
+  text-align: left;
+}
+
+.agent-form {
+  display: grid;
+  gap: 12px;
+}
+
+.agent-form input,
+.agent-form textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text-h);
+  font: inherit;
+}
+
+.agent-form button {
+  width: fit-content;
+  min-height: 42px;
+  padding: 8px 16px;
+  border: 1px solid var(--accent-border);
+  border-radius: 6px;
+  background: var(--accent-bg);
+  color: var(--text-h);
+  font: inherit;
+  cursor: pointer;
+}
+
+.agent-form button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.agent-error {
+  margin-top: 20px;
+  color: #b91c1c;
+}
+
+.agent-result {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.agent-result pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  padding: 16px;
+  border-radius: 6px;
+  background: var(--code-bg);
+  color: var(--text-h);
+  font: 14px/1.5 var(--mono);
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+@media (max-width: 760px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 code,
 .counter {
   font-family: var(--mono);

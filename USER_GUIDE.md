@@ -115,6 +115,7 @@ Then restart the frontend dev server.
 3. Add a short description of what you want to build.
 4. Click `Generate Architecture`.
 5. Review the generated summary, tech stack, folder structure, API endpoints, and risks.
+6. Use the sidebar to switch between Dashboard, Architect, Planner, Coder, Debugger, Tests, and Docs.
 
 ## 6. API Endpoints
 
@@ -168,6 +169,54 @@ Returns:
 - Vulnerability report
 - Patched code
 - Review verdict
+
+### Planner Agent
+
+```http
+POST /planner
+```
+
+Generates milestones, user stories, tasks, acceptance criteria, risks, and MVP scope.
+
+### Coder Agent
+
+```http
+POST /coder
+```
+
+Generates implementation code for a requested project feature.
+
+### Debugger Agent
+
+```http
+POST /debugger
+```
+
+Analyzes pasted code and returns likely root causes, bugs, and fixes.
+
+### Test Generator Agent
+
+```http
+POST /tests
+```
+
+Generates test code and coverage notes for pasted code.
+
+### Documentation Agent
+
+```http
+POST /documentation
+```
+
+Generates Markdown documentation from project context or code.
+
+### Project Dashboard
+
+```http
+GET /dashboard
+```
+
+Returns the current completed and next-stage roadmap items.
 
 ## 7. Run Quality Checks
 

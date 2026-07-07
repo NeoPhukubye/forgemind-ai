@@ -1,8 +1,25 @@
+import { useState } from "react";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
+import AgentWorkspace from "./components/AgentWorkspace";
+import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
 
 function App() {
+  const [activeView, setActiveView] = useState("architect");
+
+  function renderView() {
+    if (activeView === "dashboard") {
+      return <Dashboard />;
+    }
+
+    if (activeView === "architect") {
+      return <Home />;
+    }
+
+    return <AgentWorkspace type={activeView} />;
+  }
+
   return (
       <>
         <Navbar />
@@ -13,7 +30,7 @@ function App() {
               minHeight: "100vh",
             }}
         >
-          <Sidebar />
+          <Sidebar activeView={activeView} onChangeView={setActiveView} />
 
           <main
               style={{
@@ -21,7 +38,7 @@ function App() {
                 padding: "30px",
               }}
           >
-            <Home />
+            {renderView()}
           </main>
         </div>
       </>
