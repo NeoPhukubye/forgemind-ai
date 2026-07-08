@@ -1,0 +1,49 @@
+body {
+    margin: 0;
+    font-family: Inter, Arial, sans-serif;
+    background: #0f172a;
+    color: #f8fafc;
+}
+
+.hero {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.examples {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.examples button,
+.prompt-form button {
+    cursor: pointer;
+}
+
+.prompt-form {
+    max-width: 900px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.prompt-form input,
+.prompt-form textarea {
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid #334155;
+    background: #1e293b;
+    color: white;
+}
+
+.card {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 24px;
+    border-radius: 16px;
+    background: #1e293b;
+}
