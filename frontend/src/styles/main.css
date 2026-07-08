@@ -1,49 +1,37 @@
-body {
-    margin: 0;
-    font-family: Inter, Arial, sans-serif;
-    background: #0f172a;
-    color: #f8fafc;
+.results-container{
+    width:90%;
+    max-width:1100px;
+    margin:40px auto;
 }
 
-.hero {
-    text-align: center;
-    padding: 40px 20px;
+.section-card{
+    background:#1e293b;
+    border-radius:16px;
+    padding:24px;
+    margin-bottom:24px;
+    box-shadow:0 10px 25px rgba(0,0,0,.25);
 }
 
-.examples {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin-top: 20px;
+.section-card h2{
+    margin-top:0;
 }
 
-.examples button,
-.prompt-form button {
-    cursor: pointer;
+.tech-table{
+    width:100%;
+    border-collapse:collapse;
 }
 
-.prompt-form {
-    max-width: 900px;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+.tech-table td,
+.tech-table th{
+    padding:12px;
+    border-bottom:1px solid #334155;
+    text-align:left;
 }
 
-.prompt-form input,
-.prompt-form textarea {
-    padding: 14px;
-    border-radius: 10px;
-    border: 1px solid #334155;
-    background: #1e293b;
-    color: white;
+button{
+    transition:.2s;
 }
 
-.card {
-    max-width: 900px;
-    margin: 30px auto;
-    padding: 24px;
-    border-radius: 16px;
-    background: #1e293b;
+button:hover{
+    transform:translateY(-2px);
 }

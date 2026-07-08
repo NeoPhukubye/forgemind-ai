@@ -4,6 +4,10 @@ import PromptForm from "../components/PromptForm";
 import LoadingSpinner from "../components/LoadingSpinner";
 import ArchitectureCard from "../components/ArchitectureCard";
 import { generateArchitecture } from "../services/architectService";
+import toast from "react-hot-toast";
+setResult(data);
+toast.success("Architecture generated!");
+toast.error("Generation failed.");
 
 export default function Home() {
     const [projectName, setProjectName] = useState("");
@@ -18,6 +22,7 @@ export default function Home() {
         setLoading(true);
         setError("");
         setResult(null);
+        setResult(data);
 
         try {
             const data = await generateArchitecture(projectName, description);
