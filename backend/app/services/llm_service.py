@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 
@@ -23,13 +24,19 @@ client = OpenAI(
 )
 
 
+class LLMServiceError(Exception):
+    """Raised when the LLM request fails."""
+    pass
+
+
 class LLMService:
+
     def generate(
-        self,
-        system_prompt: str,
-        user_prompt: str,
-        temperature: float = 0.3,
-        max_tokens: int = 2000,
+            self,
+            system_prompt: str,
+            user_prompt: str,
+            temperature: float = 0.3,
+            max_tokens: int = 2000,
     ) -> str:
 
         try:
@@ -55,13 +62,27 @@ class LLMService:
 
         except Exception as e:
             logger.exception("Fireworks request failed")
+            raise LLMServiceError(str(e)) from e
 
-            return f"""
-# Error
+    def complete_json(
+            self,
+            system_prompt: str,
+            user_prompt: str,
+    ) -> dict:
 
-ForgeMind AI could not contact Fireworks AI.
+        response = self.generate(system_prompt, user_prompt)
 
-Reason:
+        try:
+            return json.loads(response)
+        except json.JSONDecodeError as e:
+            logger.exception("Model returned invalid JSON")
+            raise LLMServiceError(
+                f"Model returned invalid JSON:\n\n{response}"
+            ) from e
 
-{e}
-"""
+
+_llm_service = LLMService()
+
+
+def get_llm_service() -> LLMService:
+    return _llm_service
