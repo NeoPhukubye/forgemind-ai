@@ -9,59 +9,115 @@ export default function ArchitectureCard({ result }) {
     const risks = result.risks || [];
 
     return (
-        <div className="results-container">
+        <div
+            style={{
+                maxWidth: "1200px",
+                margin: "50px auto",
+            }}
+        >
+            {/* Header */}
+            <div className="card">
+                <h1
+                    style={{
+                        marginBottom: "15px",
+                        fontSize: "42px",
+                    }}
+                >
+                    🚀 {result.project}
+                </h1>
 
-            <div className="section-card">
-                <h2>🚀 {result.project}</h2>
-                <p>{result.summary}</p>
+                <p
+                    style={{
+                        fontSize: "18px",
+                        color: "#cbd5e1",
+                        lineHeight: "1.8",
+                    }}
+                >
+                    {result.summary}
+                </p>
             </div>
 
-            <div className="section-card">
+            {/* Tech Stack */}
+            <div className="card">
                 <h2>🛠 Technology Stack</h2>
 
-                <table className="tech-table">
-                    <tbody>
+                <div
+                    style={{
+                        display: "grid",
+                        gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))",
+                        gap: "20px",
+                        marginTop: "25px",
+                    }}
+                >
                     {Object.entries(techStack).map(([key, value]) => (
-                        <tr key={key}>
-                            <td><strong>{key}</strong></td>
-                            <td>
+                        <div
+                            key={key}
+                            style={{
+                                background: "#0f172a",
+                                padding: "20px",
+                                borderRadius: "14px",
+                                border: "1px solid rgba(255,255,255,.08)",
+                            }}
+                        >
+                            <h3
+                                style={{
+                                    color: "#60a5fa",
+                                    marginBottom: "10px",
+                                }}
+                            >
+                                {key}
+                            </h3>
+
+                            <p style={{ color: "#e5e7eb" }}>
                                 {Array.isArray(value)
                                     ? value.join(", ")
                                     : value}
-                            </td>
-                        </tr>
+                            </p>
+                        </div>
                     ))}
-                    </tbody>
-                </table>
+                </div>
             </div>
 
-            <div className="section-card">
+            {/* Folder Structure */}
+            <div className="card">
                 <h2>📁 Folder Structure</h2>
 
-                <ul>
-                    {(result.folder_structure || []).map(folder => (
-                        <li key={folder}>{folder}</li>
-                    ))}
-                </ul>
+                <pre
+                    style={{
+                        marginTop: "20px",
+                        background: "#020617",
+                        padding: "25px",
+                        borderRadius: "15px",
+                    }}
+                >
+{(result.folder_structure || []).join("\n")}
+                </pre>
             </div>
 
-            <div className="section-card">
+            {/* REST APIs */}
+            <div className="card">
                 <h2>🌐 REST API Endpoints</h2>
 
-                <table className="tech-table">
+                <table style={{ marginTop: "25px" }}>
                     <thead>
                     <tr>
                         <th>Method</th>
-                        <th>Path</th>
+                        <th>Endpoint</th>
                         <th>Purpose</th>
                     </tr>
                     </thead>
 
                     <tbody>
-                    {endpoints.map(endpoint => (
+                    {endpoints.map((endpoint) => (
                         <tr key={endpoint.method + endpoint.path}>
-                            <td>{endpoint.method}</td>
-                            <td>{endpoint.path}</td>
+                            <td>
+                                <strong>{endpoint.method}</strong>
+                            </td>
+
+                            <td>
+                                <code>{endpoint.path}</code>
+                            </td>
+
                             <td>{endpoint.purpose}</td>
                         </tr>
                     ))}
@@ -69,52 +125,116 @@ export default function ArchitectureCard({ result }) {
                 </table>
             </div>
 
-            <div className="section-card">
+            {/* Database */}
+            <div className="card">
                 <h2>🗄 Database Schema</h2>
 
-                {database.map(table => (
-                    <div key={table.table}>
-                        <h3>{table.table}</h3>
+                <div
+                    style={{
+                        display: "grid",
+                        gridTemplateColumns: "repeat(auto-fit,minmax(260px,1fr))",
+                        gap: "20px",
+                        marginTop: "25px",
+                    }}
+                >
+                    {database.map((table) => (
+                        <div
+                            key={table.table}
+                            style={{
+                                background: "#0f172a",
+                                borderRadius: "15px",
+                                padding: "20px",
+                                border: "1px solid rgba(255,255,255,.08)",
+                            }}
+                        >
+                            <h3
+                                style={{
+                                    color: "#8b5cf6",
+                                    marginBottom: "15px",
+                                }}
+                            >
+                                {table.table}
+                            </h3>
 
-                        <ul>
-                            {table.fields.map(field => (
-                                <li key={field}>{field}</li>
-                            ))}
-                        </ul>
-                    </div>
-                ))}
+                            <ul>
+                                {table.fields.map((field) => (
+                                    <li key={field}>{field}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    ))}
+                </div>
             </div>
 
-            <div className="section-card">
+            {/* Roadmap */}
+            <div className="card">
                 <h2>📅 Development Roadmap</h2>
 
-                <ol>
-                    {roadmap.map(step => (
+                <ol
+                    style={{
+                        marginTop: "20px",
+                        lineHeight: "2",
+                    }}
+                >
+                    {roadmap.map((step) => (
                         <li key={step}>{step}</li>
                     ))}
                 </ol>
             </div>
 
-            <div className="section-card">
+            {/* Security */}
+            <div className="card">
                 <h2>🔒 Security</h2>
 
-                <ul>
-                    {security.map(item => (
-                        <li key={item}>{item}</li>
+                <div
+                    style={{
+                        display: "grid",
+                        gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))",
+                        gap: "20px",
+                        marginTop: "20px",
+                    }}
+                >
+                    {security.map((item) => (
+                        <div
+                            key={item}
+                            style={{
+                                background: "#052e16",
+                                padding: "18px",
+                                borderRadius: "14px",
+                            }}
+                        >
+                            ✅ {item}
+                        </div>
                     ))}
-                </ul>
+                </div>
             </div>
 
-            <div className="section-card">
+            {/* Risks */}
+            <div className="card">
                 <h2>⚠ Risks</h2>
 
-                <ul>
-                    {risks.map(risk => (
-                        <li key={risk}>{risk}</li>
+                <div
+                    style={{
+                        display: "grid",
+                        gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))",
+                        gap: "20px",
+                        marginTop: "20px",
+                    }}
+                >
+                    {risks.map((risk) => (
+                        <div
+                            key={risk}
+                            style={{
+                                background: "#451a03",
+                                padding: "18px",
+                                borderRadius: "14px",
+                            }}
+                        >
+                            ⚠ {risk}
+                        </div>
                     ))}
-                </ul>
+                </div>
             </div>
-
         </div>
     );
 }
