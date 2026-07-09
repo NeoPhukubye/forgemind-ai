@@ -1,94 +1,47 @@
-import {
-    Rocket,
-    Boxes,
-    FolderTree,
-    Globe,
-    Database,
-    ShieldCheck,
-    AlertTriangle,
-    Calendar
-} from "lucide-react";
-
-const tabs = [
-    {
-        id: "architecture",
-        label: "Architecture",
-        icon: <Rocket size={18} />
-    },
-    {
-        id: "tech",
-        label: "Tech Stack",
-        icon: <Boxes size={18} />
-    },
-    {
-        id: "folders",
-        label: "Folders",
-        icon: <FolderTree size={18} />
-    },
-    {
-        id: "api",
-        label: "API",
-        icon: <Globe size={18} />
-    },
-    {
-        id: "database",
-        label: "Database",
-        icon: <Database size={18} />
-    },
-    {
-        id: "roadmap",
-        label: "Roadmap",
-        icon: <Calendar size={18} />
-    },
-    {
-        id: "security",
-        label: "Security",
-        icon: <ShieldCheck size={18} />
-    },
-    {
-        id: "risks",
-        label: "Risks",
-        icon: <AlertTriangle size={18} />
-    }
-];
-
 export default function ResultsTabs({
                                         activeTab,
                                         setActiveTab,
                                     }) {
+
+    const tabs = [
+        { id: "architecture", label: "🏗 Architecture" },
+        { id: "tech", label: "🛠 Tech Stack" },
+        { id: "folders", label: "📁 Folders" },
+        { id: "api", label: "🌐 API" },
+        { id: "database", label: "🗄 Database" },
+        { id: "roadmap", label: "🗓 Roadmap" },
+        { id: "security", label: "🔒 Security" },
+        { id: "risks", label: "⚠ Risks" },
+    ];
+
     return (
         <div
             style={{
                 display: "flex",
-                gap: "12px",
                 flexWrap: "wrap",
-                marginBottom: "30px",
+                gap: "12px",
+                margin: "30px 0",
+                justifyContent: "center",
             }}
         >
-            {tabs.map(tab => (
+            {tabs.map((tab) => (
                 <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
                     style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "8px",
-                        padding: "12px 18px",
+                        padding: "10px 18px",
                         borderRadius: "12px",
-                        border:
-                            activeTab === tab.id
-                                ? "1px solid #8b5cf6"
-                                : "1px solid rgba(255,255,255,.08)",
+                        border: "none",
+                        cursor: "pointer",
                         background:
                             activeTab === tab.id
-                                ? "linear-gradient(90deg,#7c3aed,#2563eb)"
-                                : "#111827",
+                                ? "#7c3aed"
+                                : "#1f2937",
                         color: "white",
-                        cursor: "pointer",
                         fontWeight: "600",
+                        transition: "0.3s",
                     }}
                 >
-                    {tab.icon}
                     {tab.label}
                 </button>
             ))}
