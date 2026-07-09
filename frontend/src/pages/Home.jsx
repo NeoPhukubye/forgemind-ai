@@ -5,7 +5,7 @@ import LoadingSpinner from "../components/LoadingSpinner";
 import ArchitectureCard from "../components/ArchitectureCard";
 import { generateArchitecture } from "../services/architectService";
 import toast from "react-hot-toast";
-setResult(data);
+
 toast.success("Architecture generated!");
 toast.error("Generation failed.");
 
