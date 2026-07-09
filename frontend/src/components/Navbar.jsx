@@ -1,8 +1,8 @@
 import {
     Cpu,
     Sparkles,
-    Github,
-    Menu
+    Menu,
+    Code2
 } from "lucide-react";
 
 export default function Navbar() {
@@ -28,7 +28,6 @@ export default function Navbar() {
                 }}
             >
                 {/* Left */}
-
                 <div
                     style={{
                         display: "flex",
@@ -51,7 +50,6 @@ export default function Navbar() {
                     </div>
 
                     <div>
-
                         <h2
                             style={{
                                 margin: 0,
@@ -69,12 +67,10 @@ export default function Navbar() {
                         >
                             Enterprise AI Architect
                         </small>
-
                     </div>
                 </div>
 
                 {/* Center */}
-
                 <div
                     style={{
                         display: "flex",
@@ -83,35 +79,12 @@ export default function Navbar() {
                         fontWeight: 600,
                     }}
                 >
-
-                    <span
-                        style={{
-                            cursor: "pointer",
-                        }}
-                    >
-                        Dashboard
-                    </span>
-
-                    <span
-                        style={{
-                            cursor: "pointer",
-                        }}
-                    >
-                        Features
-                    </span>
-
-                    <span
-                        style={{
-                            cursor: "pointer",
-                        }}
-                    >
-                        Documentation
-                    </span>
-
+                    <span style={{ cursor: "pointer" }}>Dashboard</span>
+                    <span style={{ cursor: "pointer" }}>Features</span>
+                    <span style={{ cursor: "pointer" }}>Documentation</span>
                 </div>
 
                 {/* Right */}
-
                 <div
                     style={{
                         display: "flex",
@@ -119,25 +92,20 @@ export default function Navbar() {
                         alignItems: "center",
                     }}
                 >
-
                     <Sparkles
                         color="#8b5cf6"
                         size={22}
                     />
 
-                    <Github
+                    <Code2
                         color="#cbd5e1"
                         size={22}
-                        style={{
-                            cursor: "pointer",
-                        }}
                     />
 
                     <Menu
                         color="#cbd5e1"
                         size={22}
                     />
-
                 </div>
             </div>
         </nav>
