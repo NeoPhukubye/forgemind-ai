@@ -6,9 +6,6 @@ import ArchitectureCard from "../components/ArchitectureCard";
 import { generateArchitecture } from "../services/architectService";
 import toast from "react-hot-toast";
 
-toast.success("Architecture generated!");
-toast.error("Generation failed.");
-
 export default function Home() {
     const [projectName, setProjectName] = useState("");
     const [description, setDescription] = useState("");
@@ -17,22 +14,29 @@ export default function Home() {
     const [error, setError] = useState("");
 
     async function handleGenerate() {
-        if (!projectName.trim()) return;
+        if (!projectName.trim()) {
+            toast.error("Please enter a project name.");
+            return;
+        }
 
         setLoading(true);
         setError("");
         setResult(null);
-        setResult(data);
 
         try {
-            const data = await generateArchitecture(projectName, description);
+            const data = await generateArchitecture(
+                projectName,
+                description
+            );
 
             if (data.error) {
                 setError(data.error);
+                toast.error(data.error);
                 return;
             }
 
             setResult(data);
+            toast.success("Architecture generated!");
 
         } catch (err) {
             console.error(err);
@@ -40,6 +44,8 @@ export default function Home() {
             setError(
                 "Could not connect to the backend. Is FastAPI running?"
             );
+
+            toast.error("Generation failed.");
 
         } finally {
             setLoading(false);
@@ -53,7 +59,6 @@ export default function Home() {
 
     return (
         <div>
-
             <Hero onExampleClick={handleExample} />
 
             <PromptForm
@@ -72,7 +77,8 @@ export default function Home() {
                     style={{
                         color: "#ef4444",
                         textAlign: "center",
-                        marginTop: "20px"
+                        marginTop: "20px",
+                        fontWeight: "bold",
                     }}
                 >
                     {error}
@@ -82,7 +88,6 @@ export default function Home() {
             {!loading && result && (
                 <ArchitectureCard result={result} />
             )}
-
         </div>
     );
 }
