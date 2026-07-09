@@ -1,14 +1,18 @@
 {
+  "homepage": "https://github.com/NeoPhukubye/forgemind-ai",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint",
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
   "name": "frontend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
-  },
+
   "dependencies": {
     "axios": "^1.18.1",
     "lucide-react": "^1.23.0",
