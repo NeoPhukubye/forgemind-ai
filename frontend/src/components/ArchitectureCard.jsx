@@ -14,7 +14,9 @@ export default function ArchitectureCard({
     if (!result) return null;
 
     switch (activeTab) {
+
         case "architecture":
+        case "dashboard":
             return (
                 <ArchitectureHeader
                     result={result}
