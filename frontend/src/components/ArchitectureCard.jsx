@@ -1,4 +1,5 @@
 import ArchitectureHeader from "./ArchitectureHeader";
+import ArchitectureDiagram from "./ArchitectureDiagram";
 import TechStack from "./TechStack";
 import FolderStructure from "./FolderStructure";
 import ApiEndpoints from "./ApiEndpoints";
@@ -17,10 +18,17 @@ export default function ArchitectureCard({
 
         case "architecture":
         case "dashboard":
+        case undefined:
             return (
-                <ArchitectureHeader
-                    result={result}
-                />
+                <>
+                    <ArchitectureHeader
+                        result={result}
+                    />
+
+                    <ArchitectureDiagram
+                        result={result}
+                    />
+                </>
             );
 
         case "tech":
@@ -74,9 +82,15 @@ export default function ArchitectureCard({
 
         default:
             return (
-                <ArchitectureHeader
-                    result={result}
-                />
+                <>
+                    <ArchitectureHeader
+                        result={result}
+                    />
+
+                    <ArchitectureDiagram
+                        result={result}
+                    />
+                </>
             );
     }
 }
