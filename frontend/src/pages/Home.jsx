@@ -3,6 +3,9 @@ import Hero from "../components/Hero";
 import PromptForm from "../components/PromptForm";
 import LoadingSpinner from "../components/LoadingSpinner";
 import ArchitectureCard from "../components/ArchitectureCard";
+import Navbar from "../components/Navbar";
+import Sidebar from "../components/Sidebar";
+
 import { generateArchitecture } from "../services/architectService";
 import toast from "react-hot-toast";
 
@@ -12,6 +15,9 @@ export default function Home() {
     const [result, setResult] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+
+    // Sidebar navigation state
+    const [activeTab, setActiveTab] = useState("dashboard");
 
     async function handleGenerate() {
         if (!projectName.trim()) {
@@ -37,7 +43,6 @@ export default function Home() {
 
             setResult(data);
             toast.success("Architecture generated!");
-
         } catch (err) {
             console.error(err);
 
@@ -46,7 +51,6 @@ export default function Home() {
             );
 
             toast.error("Generation failed.");
-
         } finally {
             setLoading(false);
         }
@@ -58,36 +62,64 @@ export default function Home() {
     }
 
     return (
-        <div>
-            <Hero onExampleClick={handleExample} />
+        <>
+            <Navbar />
 
-            <PromptForm
-                projectName={projectName}
-                description={description}
-                setProjectName={setProjectName}
-                setDescription={setDescription}
-                loading={loading}
-                onGenerate={handleGenerate}
-            />
+            <div
+                style={{
+                    display: "flex",
+                    minHeight: "calc(100vh - 80px)",
+                    background: "transparent",
+                }}
+            >
+                <Sidebar
+                    active={activeTab}
+                    setActive={setActiveTab}
+                />
 
-            {loading && <LoadingSpinner />}
-
-            {error && (
-                <div
+                <main
                     style={{
-                        color: "#ef4444",
-                        textAlign: "center",
-                        marginTop: "20px",
-                        fontWeight: "bold",
+                        flex: 1,
+                        padding: "40px",
+                        overflowY: "auto",
                     }}
                 >
-                    {error}
-                </div>
-            )}
+                    <Hero onExampleClick={handleExample} />
 
-            {!loading && result && (
-                <ArchitectureCard result={result} />
-            )}
-        </div>
+                    <PromptForm
+                        projectName={projectName}
+                        description={description}
+                        setProjectName={setProjectName}
+                        setDescription={setDescription}
+                        loading={loading}
+                        onGenerate={handleGenerate}
+                    />
+
+                    {loading && <LoadingSpinner />}
+
+                    {error && (
+                        <div
+                            style={{
+                                marginTop: "25px",
+                                padding: "18px",
+                                borderRadius: "12px",
+                                background: "#7f1d1d",
+                                color: "white",
+                                fontWeight: "bold",
+                            }}
+                        >
+                            {error}
+                        </div>
+                    )}
+
+                    {!loading && result && (
+                        <ArchitectureCard
+                            result={result}
+                            activeTab={activeTab}
+                        />
+                    )}
+                </main>
+            </div>
+        </>
     );
 }
