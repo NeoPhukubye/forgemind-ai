@@ -15,30 +15,66 @@ export default function ArchitectureCard({
 
     switch (activeTab) {
         case "architecture":
-            return <ArchitectureHeader result={result} />;
+            return (
+                <ArchitectureHeader
+                    result={result}
+                />
+            );
 
         case "tech":
-            return <TechStack result={result} />;
+            return (
+                <TechStack
+                    result={result}
+                />
+            );
 
         case "folders":
-            return <FolderStructure result={result} />;
+            return (
+                <FolderStructure
+                    result={result}
+                />
+            );
 
         case "api":
-            return <ApiEndpoints result={result} />;
+            return (
+                <ApiEndpoints
+                    result={result}
+                />
+            );
 
         case "database":
-            return <DatabaseSchema result={result} />;
+            return (
+                <DatabaseSchema
+                    result={result}
+                />
+            );
 
         case "roadmap":
-            return <Roadmap result={result} />;
+            return (
+                <Roadmap
+                    result={result}
+                />
+            );
 
         case "security":
-            return <Security result={result} />;
+            return (
+                <Security
+                    result={result}
+                />
+            );
 
         case "risks":
-            return <Risks result={result} />;
+            return (
+                <Risks
+                    result={result}
+                />
+            );
 
         default:
-            return <ArchitectureHeader result={result} />;
+            return (
+                <ArchitectureHeader
+                    result={result}
+                />
+            );
     }
 }
