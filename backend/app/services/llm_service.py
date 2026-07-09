@@ -3,29 +3,23 @@ import logging
 import os
 
 from dotenv import load_dotenv
-from openai import OpenAI
+from google import genai
 
 load_dotenv()
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-MODEL = os.getenv(
-    "FIREWORKS_MODEL",
-    "accounts/fireworks/models/gemma-3-4b-it"
-)
+API_KEY = os.getenv("GEMINI_API_KEY")
+MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
 
-client = OpenAI(
-    api_key=os.getenv("FIREWORKS_API_KEY"),
-    base_url=os.getenv(
-        "FIREWORKS_BASE_URL",
-        "https://api.fireworks.ai/inference/v1"
-    ),
-)
+if not API_KEY:
+    raise RuntimeError("GEMINI_API_KEY not found in .env")
+
+client = genai.Client(api_key=API_KEY)
 
 
 class LLMServiceError(Exception):
-    """Raised when the LLM request fails."""
     pass
 
 
@@ -33,56 +27,62 @@ class LLMService:
 
     def generate(
             self,
-            system_prompt: str,
-            user_prompt: str,
-            temperature: float = 0.3,
-            max_tokens: int = 2000,
-    ) -> str:
+            system_prompt,
+            user_prompt,
+            temperature=0.3,
+            max_tokens=4096,
+    ):
+
+        prompt = f"""
+{system_prompt}
+
+{user_prompt}
+"""
 
         try:
-            logger.info("Generating AI response using Gemma...")
 
-            response = client.chat.completions.create(
+            logger.info(f"Using Gemini model: {MODEL}")
+
+            response = client.models.generate_content(
                 model=MODEL,
-                messages=[
-                    {
-                        "role": "system",
-                        "content": system_prompt,
-                    },
-                    {
-                        "role": "user",
-                        "content": user_prompt,
-                    },
-                ],
-                temperature=temperature,
-                max_tokens=max_tokens,
+                contents=prompt,
             )
 
-            return response.choices[0].message.content
+            return response.text
 
         except Exception as e:
-            logger.exception("Fireworks request failed")
-            raise LLMServiceError(str(e)) from e
+            logger.exception("Gemini request failed")
+            raise LLMServiceError(str(e))
 
     def complete_json(
             self,
-            system_prompt: str,
-            user_prompt: str,
-    ) -> dict:
+            system_prompt,
+            user_prompt,
+    ):
 
-        response = self.generate(system_prompt, user_prompt)
+        response = self.generate(
+            system_prompt,
+            user_prompt,
+        )
 
         try:
             return json.loads(response)
-        except json.JSONDecodeError as e:
-            logger.exception("Model returned invalid JSON")
+
+        except Exception:
+
+            start = response.find("{")
+            end = response.rfind("}") + 1
+
+            if start != -1 and end != -1:
+                return json.loads(response[start:end])
+
             raise LLMServiceError(
-                f"Model returned invalid JSON:\n\n{response}"
-            ) from e
+                f"Gemini returned invalid JSON:\n\n{response}"
+            )
 
 
 _llm_service = LLMService()
 
 
-def get_llm_service() -> LLMService:
+def get_llm_service():
     return _llm_service
