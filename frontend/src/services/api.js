@@ -1,8 +1,9 @@
 import axios from "axios";
 
-// Use your cloud backend URL
+// Use your Render cloud backend URL
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_BASE_URL || "https://forgemind-ai-gmcg.onrender.com",
+    baseURL: "https://forgemind-ai-gmcg.onrender.com",
+    timeout: 30000,
 });
 
 export default api;
