@@ -1,9 +1,13 @@
 import axios from "axios";
 
-// Use your Render cloud backend URL
+// Render cloud backend URL - GitHub Pages calls this
+const BACKEND_URL = "https://forgemind-ai-gmcg.onrender.com";
+
 const api = axios.create({
-    baseURL: "https://forgemind-ai-gmcg.onrender.com",
+    baseURL: BACKEND_URL,
     timeout: 30000,
 });
+
+console.log("✅ API Service initialized with baseURL:", BACKEND_URL);
 
 export default api;
