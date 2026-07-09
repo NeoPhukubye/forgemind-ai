@@ -9,11 +9,17 @@ from app.api.routes import router as api_router
 from app.core.config import get_settings
 from app.services.security_service import SecurityOrchestrator
 
-app = FastAPI(title="SecurityCopilot AI - Hackathon Core Backend")
+app = FastAPI(title="ForgeMind AI - Hackathon Core Backend")
 
+# Allow requests from GitHub Pages and local development
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "https://neophukubye.github.io",
+        "https://forgemind-ai-gmcg.onrender.com",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -33,9 +39,7 @@ def root():
     settings = get_settings()
     return {
         "name": "ForgeMind AI",
-        "provider": "Fireworks AI",
-        "model": settings.fireworks_model,
-        "message": "Gemma-powered hackathon backend is running.",
+        "message": "Backend is running successfully!",
     }
 
 
@@ -45,9 +49,6 @@ def health():
     return {
         "status": "ok",
         "environment": settings.environment,
-        "provider": "fireworks",
-        "model": settings.fireworks_model,
-        "fireworks_configured": bool(settings.fireworks_api_key),
     }
 
 
