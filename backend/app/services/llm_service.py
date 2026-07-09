@@ -3,20 +3,21 @@ import logging
 import os
 
 from dotenv import load_dotenv
-from google import genai
+import openai
 
 load_dotenv()
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-API_KEY = os.getenv("GEMINI_API_KEY")
-MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+FIREWORKS_API_KEY = os.getenv("FIREWORKS_API_KEY")
+FIREWORKS_BASE_URL = os.getenv("FIREWORKS_BASE_URL", "https://api.fireworks.ai/inference/v1")
+FIREWORKS_MODEL = os.getenv("FIREWORKS_MODEL", "accounts/fireworks/models/gemma-3-12b-it")
 
-if not API_KEY:
-    raise RuntimeError("GEMINI_API_KEY not found in .env")
+if not FIREWORKS_API_KEY:
+    raise RuntimeError("FIREWORKS_API_KEY not found in .env")
 
-client = genai.Client(api_key=API_KEY)
+client = openai.OpenAI(api_key=FIREWORKS_API_KEY, base_url=FIREWORKS_BASE_URL)
 
 
 class LLMServiceError(Exception):
@@ -33,26 +34,35 @@ class LLMService:
             max_tokens=4096,
     ):
 
-        prompt = f"""
-{system_prompt}
-
-{user_prompt}
-"""
-
         try:
 
-            logger.info(f"Using Gemini model: {MODEL}")
+            logger.info(f"Using Fireworks model: {FIREWORKS_MODEL}")
 
-            response = client.models.generate_content(
-                model=MODEL,
-                contents=prompt,
+            response = client.chat.completions.create(
+                model=FIREWORKS_MODEL,
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_prompt},
+                ],
+                temperature=temperature,
+                max_tokens=max_tokens,
             )
 
-            return response.text
+            return response.choices[0].message.content
 
         except Exception as e:
-            logger.exception("Gemini request failed")
+            logger.exception("Fireworks request failed")
             raise LLMServiceError(str(e))
+
+    def complete(
+            self,
+            system_prompt,
+            user_prompt,
+            temperature=0.3,
+            max_tokens=4096,
+    ):
+        """Alias for generate() to match agent expectations."""
+        return self.generate(system_prompt, user_prompt, temperature, max_tokens)
 
     def complete_json(
             self,
@@ -77,7 +87,7 @@ class LLMService:
                 return json.loads(response[start:end])
 
             raise LLMServiceError(
-                f"Gemini returned invalid JSON:\n\n{response}"
+                f"Fireworks returned invalid JSON:\n\n{response}"
             )
 
 
