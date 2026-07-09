@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 MODEL = os.getenv(
     "FIREWORKS_MODEL",
-    "accounts/fireworks/models/gemma-3-12b-it"
+    "accounts/fireworks/models/gemma-3-4b-it"
 )
 
 client = OpenAI(
