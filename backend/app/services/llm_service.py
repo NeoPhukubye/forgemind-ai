@@ -3,24 +3,20 @@ import logging
 import os
 
 from dotenv import load_dotenv
-from openai import OpenAI
+from google import genai
 
 load_dotenv()
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-FIREWORKS_API_KEY = os.getenv("FIREWORKS_API_KEY")
-FIREWORKS_BASE_URL = os.getenv("FIREWORKS_BASE_URL", "https://api.fireworks.ai/inference/v1")
-FIREWORKS_MODEL = os.getenv("FIREWORKS_MODEL", "accounts/fireworks/models/gemma-3-12b-it")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "AQ.Ab8RN6KsMrtfi4IkcUqaEij1dRbnCeQQD40ZM2r5DOXaOPy0-A")
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
 
-if not FIREWORKS_API_KEY:
-    raise RuntimeError("FIREWORKS_API_KEY not found in .env")
+if not GEMINI_API_KEY:
+    raise RuntimeError("GEMINI_API_KEY not found in .env")
 
-client = OpenAI(
-    api_key=FIREWORKS_API_KEY,
-    base_url=FIREWORKS_BASE_URL,
-)
+client = genai.Client(api_key=GEMINI_API_KEY)
 
 
 class LLMServiceError(Exception):
@@ -37,23 +33,24 @@ class LLMService:
             max_tokens=4096,
     ):
 
-        try:
-            logger.info(f"Using Fireworks model: {FIREWORKS_MODEL}")
+        prompt = f"""
+{system_prompt}
 
-            response = client.chat.completions.create(
-                model=FIREWORKS_MODEL,
-                messages=[
-                    {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": user_prompt},
-                ],
-                temperature=temperature,
-                max_tokens=max_tokens,
+{user_prompt}
+"""
+
+        try:
+            logger.info(f"Using Gemini model: {GEMINI_MODEL}")
+
+            response = client.models.generate_content(
+                model=GEMINI_MODEL,
+                contents=prompt,
             )
 
-            return response.choices[0].message.content
+            return response.text
 
         except Exception as e:
-            logger.exception("Fireworks AI request failed")
+            logger.exception("Gemini request failed")
             raise LLMServiceError(str(e))
 
     def complete(
@@ -89,7 +86,7 @@ class LLMService:
                 return json.loads(response[start:end])
 
             raise LLMServiceError(
-                f"Fireworks AI returned invalid JSON:\n\n{response}"
+                f"Gemini returned invalid JSON:\n\n{response}"
             )
 
 
