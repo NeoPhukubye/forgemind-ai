@@ -1,25 +1,30 @@
 import { useState } from "react";
-import Hero from "../components/Hero";
-import PromptForm from "../components/PromptForm";
-import LoadingSpinner from "../components/LoadingSpinner";
-import ArchitectureCard from "../components/ArchitectureCard";
+import toast from "react-hot-toast";
+
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
+import Hero from "../components/Hero";
+import PromptForm from "../components/PromptForm";
+import DashboardStats from "../components/DashboardStats";
+import ResultsTabs from "../components/ResultsTabs";
+import ArchitectureCard from "../components/ArchitectureCard";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 import { generateArchitecture } from "../services/architectService";
-import toast from "react-hot-toast";
 
 export default function Home() {
     const [projectName, setProjectName] = useState("");
     const [description, setDescription] = useState("");
+
     const [result, setResult] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
-    // Sidebar navigation state
-    const [activeTab, setActiveTab] = useState("dashboard");
+    // Controls Sidebar + Tabs
+    const [activeTab, setActiveTab] = useState("architecture");
 
     async function handleGenerate() {
+
         if (!projectName.trim()) {
             toast.error("Please enter a project name.");
             return;
@@ -30,6 +35,7 @@ export default function Home() {
         setResult(null);
 
         try {
+
             const data = await generateArchitecture(
                 projectName,
                 description
@@ -42,17 +48,26 @@ export default function Home() {
             }
 
             setResult(data);
-            toast.success("Architecture generated!");
+
+            // Automatically switch to Architecture tab
+            setActiveTab("architecture");
+
+            toast.success("Architecture Generated!");
+
         } catch (err) {
+
             console.error(err);
 
             setError(
                 "Could not connect to the backend. Is FastAPI running?"
             );
 
-            toast.error("Generation failed.");
+            toast.error("Generation Failed");
+
         } finally {
+
             setLoading(false);
+
         }
     }
 
@@ -69,7 +84,6 @@ export default function Home() {
                 style={{
                     display: "flex",
                     minHeight: "calc(100vh - 80px)",
-                    background: "transparent",
                 }}
             >
                 <Sidebar
@@ -84,7 +98,9 @@ export default function Home() {
                         overflowY: "auto",
                     }}
                 >
-                    <Hero onExampleClick={handleExample} />
+                    <Hero
+                        onExampleClick={handleExample}
+                    />
 
                     <PromptForm
                         projectName={projectName}
@@ -95,17 +111,19 @@ export default function Home() {
                         onGenerate={handleGenerate}
                     />
 
-                    {loading && <LoadingSpinner />}
+                    {loading && (
+                        <LoadingSpinner />
+                    )}
 
                     {error && (
                         <div
                             style={{
-                                marginTop: "25px",
-                                padding: "18px",
-                                borderRadius: "12px",
                                 background: "#7f1d1d",
                                 color: "white",
-                                fontWeight: "bold",
+                                padding: "18px",
+                                borderRadius: "12px",
+                                marginTop: "20px",
+                                fontWeight: "600",
                             }}
                         >
                             {error}
@@ -113,10 +131,21 @@ export default function Home() {
                     )}
 
                     {!loading && result && (
-                        <ArchitectureCard
-                            result={result}
-                            activeTab={activeTab}
-                        />
+                        <>
+                            <DashboardStats
+                                result={result}
+                            />
+
+                            <ResultsTabs
+                                activeTab={activeTab}
+                                setActiveTab={setActiveTab}
+                            />
+
+                            <ArchitectureCard
+                                result={result}
+                                activeTab={activeTab}
+                            />
+                        </>
                     )}
                 </main>
             </div>
