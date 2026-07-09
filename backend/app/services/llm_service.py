@@ -3,7 +3,7 @@ import logging
 import os
 
 from dotenv import load_dotenv
-import openai
+from openai import OpenAI
 
 load_dotenv()
 
@@ -17,7 +17,10 @@ FIREWORKS_MODEL = os.getenv("FIREWORKS_MODEL", "accounts/fireworks/models/gemma-
 if not FIREWORKS_API_KEY:
     raise RuntimeError("FIREWORKS_API_KEY not found in .env")
 
-client = openai.OpenAI(api_key=FIREWORKS_API_KEY, base_url=FIREWORKS_BASE_URL)
+client = OpenAI(
+    api_key=FIREWORKS_API_KEY,
+    base_url=FIREWORKS_BASE_URL,
+)
 
 
 class LLMServiceError(Exception):
@@ -35,7 +38,6 @@ class LLMService:
     ):
 
         try:
-
             logger.info(f"Using Fireworks model: {FIREWORKS_MODEL}")
 
             response = client.chat.completions.create(
@@ -51,7 +53,7 @@ class LLMService:
             return response.choices[0].message.content
 
         except Exception as e:
-            logger.exception("Fireworks request failed")
+            logger.exception("Fireworks AI request failed")
             raise LLMServiceError(str(e))
 
     def complete(
@@ -61,7 +63,7 @@ class LLMService:
             temperature=0.3,
             max_tokens=4096,
     ):
-        """Alias for generate() to match agent expectations."""
+        """Alias for generate() to support all agent calls."""
         return self.generate(system_prompt, user_prompt, temperature, max_tokens)
 
     def complete_json(
@@ -87,7 +89,7 @@ class LLMService:
                 return json.loads(response[start:end])
 
             raise LLMServiceError(
-                f"Fireworks returned invalid JSON:\n\n{response}"
+                f"Fireworks AI returned invalid JSON:\n\n{response}"
             )
 
 
