@@ -13,14 +13,14 @@ app = FastAPI(
     title="ForgeMind AI - Hackathon Core Backend"
 )
 
-# ---------------------------------------------------
 # CORS
-# Temporary configuration for deployment debugging.
-# After the hackathon you can restrict allow_origins.
-# ---------------------------------------------------
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "https://neophukubye.github.io",
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+    ],
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -28,6 +28,7 @@ app.add_middleware(
 
 orchestrator = SecurityOrchestrator()
 
+# Register API routes
 app.include_router(api_router)
 
 
@@ -50,6 +51,7 @@ def health():
     return {
         "status": "ok",
         "environment": settings.environment,
+        "provider": "gemini",
     }
 
 
