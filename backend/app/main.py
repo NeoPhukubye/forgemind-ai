@@ -10,29 +10,24 @@ from app.core.config import get_settings
 from app.services.security_service import SecurityOrchestrator
 
 app = FastAPI(
-    title="ForgeMind AI",
-    version="1.0.0",
-    description="AI-powered software architecture assistant"
+    title="ForgeMind AI - Hackathon Core Backend"
 )
 
-# CORS Configuration
+# ---------------------------------------------------
+# CORS
+# Temporary configuration for deployment debugging.
+# After the hackathon you can restrict allow_origins.
+# ---------------------------------------------------
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-        "https://neophukubye.github.io",
-        "https://forgemind-ai-gmcg.onrender.com",
-    ],
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Services
 orchestrator = SecurityOrchestrator()
 
-# Register API routes
 app.include_router(api_router)
 
 
@@ -42,11 +37,8 @@ class CodePayload(BaseModel):
 
 @app.get("/")
 def root():
-    settings = get_settings()
     return {
         "name": "ForgeMind AI",
-        "status": "running",
-        "environment": settings.environment,
         "message": "Backend is running successfully!"
     }
 
@@ -54,6 +46,7 @@ def root():
 @app.get("/health")
 def health():
     settings = get_settings()
+
     return {
         "status": "ok",
         "environment": settings.environment,
