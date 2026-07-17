@@ -11,7 +11,7 @@ import LoadingSpinner from "../components/LoadingSpinner";
 
 import { generateArchitecture } from "../services/architectService";
 
-export default function Home() {
+export default function Home({ sidebarOpen, setSidebarOpen }) {
     const [projectName, setProjectName] = useState("");
     const [description, setDescription] = useState("");
 
@@ -19,7 +19,6 @@ export default function Home() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
-    // Controls Sidebar + Tabs
     const [activeTab, setActiveTab] = useState("architecture");
 
     async function handleGenerate() {
@@ -47,10 +46,7 @@ export default function Home() {
             }
 
             setResult(data);
-
-            // Automatically switch to Architecture tab
             setActiveTab("architecture");
-
             toast.success("Architecture Generated!");
 
         } catch (err) {
@@ -78,6 +74,7 @@ export default function Home() {
     return (
         <>
             <div
+                className="home-layout"
                 style={{
                     display: "flex",
                     minHeight: "calc(100vh - 80px)",
@@ -86,9 +83,12 @@ export default function Home() {
                 <Sidebar
                     active={activeTab}
                     setActive={setActiveTab}
+                    open={sidebarOpen}
+                    onClose={() => setSidebarOpen(false)}
                 />
 
                 <main
+                    className="home-main"
                     style={{
                         flex: 1,
                         padding: "40px",

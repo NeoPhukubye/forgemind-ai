@@ -51,6 +51,7 @@ export default function DashboardStats({ result }) {
 
     return (
         <div
+            className="stats-grid"
             style={{
                 display: "grid",
                 gridTemplateColumns:

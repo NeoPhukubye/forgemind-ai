@@ -56,6 +56,7 @@ export default function Hero({ onExampleClick }) {
             </p>
 
             <div
+                className="hero-examples"
                 style={{
                     display: "flex",
                     justifyContent: "center",

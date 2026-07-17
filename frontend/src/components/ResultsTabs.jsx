@@ -16,6 +16,7 @@ export default function ResultsTabs({
 
     return (
         <div
+            className="result-tabs"
             style={{
                 display: "flex",
                 flexWrap: "wrap",
