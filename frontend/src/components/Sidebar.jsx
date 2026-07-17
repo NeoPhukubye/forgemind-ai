@@ -6,7 +6,8 @@ import {
     ShieldCheck,
     Rocket,
     Globe,
-    AlertTriangle
+    AlertTriangle,
+    X
 } from "lucide-react";
 
 const menuItems = [
@@ -52,103 +53,134 @@ const menuItems = [
     },
 ];
 
-export default function Sidebar({ active, setActive }) {
+export default function Sidebar({ active, setActive, open, onClose }) {
     return (
-        <aside
-            style={{
-                width: "270px",
-                minHeight: "calc(100vh - 82px)",
-                background: "rgba(15,23,42,.9)",
-                borderRight: "1px solid rgba(255,255,255,.08)",
-                padding: "30px 20px",
-                position: "sticky",
-                top: "82px",
-            }}
-        >
-            <div
+        <>
+            {open && (
+                <div
+                    className="sidebar-overlay"
+                    onClick={onClose}
+                />
+            )}
+            <aside
+                className={`sidebar${open ? " sidebar--open" : ""}`}
                 style={{
-                    color: "#94a3b8",
-                    fontWeight: 700,
-                    fontSize: "13px",
-                    textTransform: "uppercase",
-                    letterSpacing: "2px",
-                    marginBottom: "25px",
+                    width: "270px",
+                    minHeight: "calc(100vh - 82px)",
+                    background: "rgba(15,23,42,.9)",
+                    borderRight: "1px solid rgba(255,255,255,.08)",
+                    padding: "30px 20px",
+                    position: "sticky",
+                    top: "82px",
                 }}
             >
-                Workspace
-            </div>
+                {open && (
+                    <button
+                        onClick={onClose}
+                        style={{
+                            position: "absolute",
+                            top: "16px",
+                            right: "16px",
+                            background: "transparent",
+                            border: "none",
+                            color: "#94a3b8",
+                            padding: "4px",
+                            margin: 0,
+                        }}
+                    >
+                        <X size={22} />
+                    </button>
+                )}
 
-            {menuItems.map((item) => (
-                <button
-                    key={item.id}
-                    onClick={() => setActive(item.id)}
+                <div
                     style={{
-                        width: "100%",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "14px",
-                        padding: "15px",
-                        marginBottom: "12px",
-                        borderRadius: "14px",
-                        border:
-                            active === item.id
-                                ? "1px solid #7c3aed"
-                                : "1px solid transparent",
-                        background:
-                            active === item.id
-                                ? "linear-gradient(90deg,#7c3aed,#2563eb)"
-                                : "transparent",
+                        color: "#94a3b8",
+                        fontWeight: 700,
+                        fontSize: "13px",
+                        textTransform: "uppercase",
+                        letterSpacing: "2px",
+                        marginBottom: "25px",
+                    }}
+                >
+                    Workspace
+                </div>
+
+                {menuItems.map((item) => (
+                    <button
+                        key={item.id}
+                        onClick={() => {
+                            setActive(item.id);
+                            if (onClose) onClose();
+                        }}
+                        style={{
+                            width: "100%",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "14px",
+                            padding: "15px",
+                            marginBottom: "12px",
+                            borderRadius: "14px",
+                            border:
+                                active === item.id
+                                    ? "1px solid #7c3aed"
+                                    : "1px solid transparent",
+                            background:
+                                active === item.id
+                                    ? "linear-gradient(90deg,#7c3aed,#2563eb)"
+                                    : "transparent",
+                            color: "white",
+                            cursor: "pointer",
+                            transition: ".3s",
+                            fontSize: "15px",
+                            fontWeight: 600,
+                            marginTop: 0,
+                        }}
+                        onMouseEnter={(e) => {
+                            if (active !== item.id) {
+                                e.currentTarget.style.background =
+                                    "rgba(255,255,255,.05)";
+                            }
+                        }}
+                        onMouseLeave={(e) => {
+                            if (active !== item.id) {
+                                e.currentTarget.style.background = "transparent";
+                            }
+                        }}
+                    >
+                        {item.icon}
+                        {item.label}
+                    </button>
+                ))}
+
+                <div
+                    style={{
+                        marginTop: "50px",
+                        padding: "20px",
+                        borderRadius: "16px",
+                        background: "linear-gradient(180deg,#7c3aed,#2563eb)",
                         color: "white",
-                        cursor: "pointer",
-                        transition: ".3s",
-                        fontSize: "15px",
-                        fontWeight: 600,
-                    }}
-                    onMouseEnter={(e) => {
-                        if (active !== item.id) {
-                            e.currentTarget.style.background =
-                                "rgba(255,255,255,.05)";
-                        }
-                    }}
-                    onMouseLeave={(e) => {
-                        if (active !== item.id) {
-                            e.currentTarget.style.background = "transparent";
-                        }
                     }}
                 >
-                    {item.icon}
-                    {item.label}
-                </button>
-            ))}
+                    <h3
+                        style={{
+                            marginBottom: "10px",
+                        }}
+                    >
+                        ForgeMind AI
+                    </h3>
 
-            <div
-                style={{
-                    marginTop: "50px",
-                    padding: "20px",
-                    borderRadius: "16px",
-                    background: "linear-gradient(180deg,#7c3aed,#2563eb)",
-                    color: "white",
-                }}
-            >
-                <h3
-                    style={{
-                        marginBottom: "10px",
-                    }}
-                >
-                    🚀 ForgeMind AI
-                </h3>
-
-                <p
-                    style={{
-                        fontSize: "14px",
-                        lineHeight: "1.6",
-                    }}
-                >
-                    Powered by Fireworks AI
-                    <br />
-                    Accelerated by AMD
-                </p>
-            </div>
-        </aside>
+                    <p
+                        style={{
+                            fontSize: "14px",
+                            lineHeight: "1.6",
+                        }}
+                    >
+                        Powered by Fireworks AI
+                        <br />
+                        Accelerated by AMD
+                    </p>
+                </div>
+            </aside>
+        </>
     );
 }

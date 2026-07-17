@@ -5,7 +5,7 @@ import {
     Code2
 } from "lucide-react";
 
-export default function Navbar() {
+export default function Navbar({ onMenuClick }) {
     return (
         <nav
             style={{
@@ -18,6 +18,7 @@ export default function Navbar() {
             }}
         >
             <div
+                className="navbar-inner"
                 style={{
                     maxWidth: "1400px",
                     margin: "0 auto",
@@ -29,6 +30,7 @@ export default function Navbar() {
             >
                 {/* Left */}
                 <div
+                    className="navbar-brand"
                     style={{
                         display: "flex",
                         alignItems: "center",
@@ -44,6 +46,7 @@ export default function Navbar() {
                             placeItems: "center",
                             background:
                                 "linear-gradient(135deg,#7c3aed,#2563eb)",
+                            flexShrink: 0,
                         }}
                     >
                         <Cpu size={24} color="white" />
@@ -70,8 +73,9 @@ export default function Navbar() {
                     </div>
                 </div>
 
-                {/* Center */}
+                {/* Center - hidden on mobile via CSS */}
                 <div
+                    className="navbar-center"
                     style={{
                         display: "flex",
                         gap: "28px",
@@ -102,10 +106,21 @@ export default function Navbar() {
                         size={22}
                     />
 
-                    <Menu
-                        color="#cbd5e1"
-                        size={22}
-                    />
+                    <button
+                        onClick={onMenuClick}
+                        style={{
+                            background: "transparent",
+                            border: "none",
+                            padding: "4px",
+                            margin: 0,
+                            cursor: "pointer",
+                        }}
+                    >
+                        <Menu
+                            color="#cbd5e1"
+                            size={22}
+                        />
+                    </button>
                 </div>
             </div>
         </nav>

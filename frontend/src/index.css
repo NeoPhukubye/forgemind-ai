@@ -203,21 +203,131 @@ code{
 @media(max-width:768px){
 
   .hero h1{
-    font-size:42px;
+    font-size:32px;
   }
 
   .hero p{
-    font-size:17px;
+    font-size:15px;
+  }
+
+  .hero{
+    padding:40px 15px;
   }
 
   #root{
-    padding:20px;
+    padding:12px;
   }
 
   .card{
-    padding:20px;
+    padding:16px;
   }
 
+  /* Navbar */
+  .navbar-center{
+    display:none !important;
+  }
+
+  .navbar-inner{
+    padding:12px 16px !important;
+  }
+
+  /* Sidebar */
+  .sidebar{
+    display:none;
+  }
+
+  .sidebar.sidebar--open{
+    display:block;
+    position:fixed;
+    top:0;
+    left:0;
+    width:75vw;
+    max-width:300px;
+    height:100vh;
+    z-index:2000;
+    overflow-y:auto;
+    background:rgba(15,23,42,.97);
+    padding:20px;
+    border-right:1px solid rgba(255,255,255,.1);
+  }
+
+  .sidebar-overlay{
+    display:block;
+    position:fixed;
+    inset:0;
+    z-index:1999;
+    background:rgba(0,0,0,.6);
+  }
+
+  /* Home layout */
+  .home-layout{
+    flex-direction:column !important;
+    min-height:auto !important;
+  }
+
+  .home-main{
+    padding:16px !important;
+  }
+
+  /* Example buttons in Hero */
+  .hero-examples{
+    flex-direction:column !important;
+    align-items:stretch !important;
+  }
+
+  .hero-examples button{
+    min-width:auto !important;
+    width:100% !important;
+  }
+
+  /* Stats grid */
+  .stats-grid{
+    grid-template-columns:repeat(2,1fr) !important;
+    gap:12px !important;
+  }
+
+  .stats-grid h1{
+    font-size:28px !important;
+  }
+
+  /* Result tabs */
+  .result-tabs{
+    gap:8px !important;
+  }
+
+  .result-tabs button{
+    padding:8px 12px !important;
+    font-size:13px !important;
+  }
+
+  /* Footer */
+  footer{
+    padding:20px 16px !important;
+  }
+
+  /* Tables */
+  table{
+    display:block;
+    overflow-x:auto;
+  }
+}
+
+@media(max-width:480px){
+  .hero h1{
+    font-size:26px;
+  }
+
+  .stats-grid{
+    grid-template-columns:1fr !important;
+  }
+
+  .navbar-brand h2{
+    font-size:16px !important;
+  }
+
+  .navbar-brand small{
+    display:none !important;
+  }
 }
 @keyframes fadeIn{
 
