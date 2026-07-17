@@ -86,8 +86,11 @@ class LLMService:
             start = response.find("{")
             end = response.rfind("}") + 1
 
-            if start != -1 and end != -1:
-                return json.loads(response[start:end])
+            if start != -1 and end != 0:
+                try:
+                    return json.loads(response[start:end])
+                except Exception:
+                    pass
 
             raise LLMServiceError(
                 f"Gemini returned invalid JSON:\n\n{response}"

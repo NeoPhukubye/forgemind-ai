@@ -1,7 +1,6 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import Hero from "../components/Hero";
 import PromptForm from "../components/PromptForm";
@@ -78,8 +77,6 @@ export default function Home() {
 
     return (
         <>
-            <Navbar />
-
             <div
                 style={{
                     display: "flex",

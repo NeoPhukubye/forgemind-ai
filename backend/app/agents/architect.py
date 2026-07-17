@@ -28,7 +28,7 @@ class ArchitectAgent:
                 "error": str(exc),
                 "message": (
                     f"Could not generate architecture for {project_name}. "
-                    "Check that FIREWORKS_API_KEY is set in backend/.env."
+                    "Check that GEMINI_API_KEY is set in backend/.env."
                 ),
             }
 
