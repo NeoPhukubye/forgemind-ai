@@ -29,24 +29,19 @@ class LLMServiceError(Exception):
 
 class LLMService:
 
-    def generate(
+    async def generate(
             self,
             system_prompt,
             user_prompt,
             temperature=0.3,
             max_tokens=4096,
     ):
-
-        prompt = f"""
-{system_prompt}
-
-{user_prompt}
-"""
+        prompt = f"{system_prompt}\n\n{user_prompt}"
 
         try:
             logger.info(f"Using Gemini model: {GEMINI_MODEL}")
 
-            response = client.models.generate_content(
+            response = await client.aio.models.generate_content(
                 model=GEMINI_MODEL,
                 contents=prompt,
             )
@@ -57,38 +52,40 @@ class LLMService:
             logger.exception("Gemini request failed")
             raise LLMServiceError(str(e))
 
-    def complete(
+    async def complete(
             self,
             system_prompt,
             user_prompt,
             temperature=0.3,
             max_tokens=4096,
     ):
-        """Alias for generate() to support all agent calls."""
-        return self.generate(system_prompt, user_prompt, temperature, max_tokens)
+        return await self.generate(system_prompt, user_prompt, temperature, max_tokens)
 
-    def complete_json(
+    async def complete_json(
             self,
             system_prompt,
             user_prompt,
     ):
-
-        response = self.generate(
-            system_prompt,
-            user_prompt,
-        )
+        response = await self.generate(system_prompt, user_prompt)
 
         try:
             return json.loads(response)
-
         except Exception:
-
             start = response.find("{")
             end = response.rfind("}") + 1
 
             if start != -1 and end != 0:
                 try:
                     return json.loads(response[start:end])
+                except Exception:
+                    pass
+
+            # Try array fallback
+            arr_start = response.find("[")
+            arr_end = response.rfind("]") + 1
+            if arr_start != -1 and arr_end != 0:
+                try:
+                    return json.loads(response[arr_start:arr_end])
                 except Exception:
                     pass
 

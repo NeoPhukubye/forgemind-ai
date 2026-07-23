@@ -4,29 +4,14 @@ from pathlib import Path
 
 
 class Settings:
-    """
-    Central app configuration, loaded from environment variables / .env.
-
-    Fireworks AI is used as the LLM provider because it serves open models
-    (including Gemma) on AMD GPU infrastructure, which is exactly what this
-    hackathon provides credits for.
-    """
+    """Central app configuration, loaded from environment variables / .env."""
 
     def __init__(self):
         env_values = _read_env_file()
 
         self.environment = _get_config_value(env_values, "ENVIRONMENT", "development")
-        self.fireworks_api_key = _get_config_value(env_values, "FIREWORKS_API_KEY", "")
-        self.fireworks_base_url = _get_config_value(
-            env_values,
-            "FIREWORKS_BASE_URL",
-            "https://api.fireworks.ai/inference/v1",
-        )
-        self.fireworks_model = _get_config_value(
-            env_values,
-            "FIREWORKS_MODEL",
-            "accounts/fireworks/models/gemma-3-12b-it",
-        )
+        self.gemini_api_key = _get_config_value(env_values, "GEMINI_API_KEY", "")
+        self.gemini_model = _get_config_value(env_values, "GEMINI_MODEL", "gemini-2.5-flash")
 
 
 @lru_cache
