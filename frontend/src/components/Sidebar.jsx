@@ -175,9 +175,9 @@ export default function Sidebar({ active, setActive, open, onClose }) {
                             lineHeight: "1.6",
                         }}
                     >
-                        Powered by Fireworks AI
+                        Powered by Gemini AI
                         <br />
-                        Accelerated by AMD
+                        Built for AMD Hackathon
                     </p>
                 </div>
             </aside>

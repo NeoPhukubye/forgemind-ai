@@ -329,6 +329,83 @@ code{
     display:none !important;
   }
 }
+/* ---------------- AGENT PAGES ---------------- */
+
+.agent-page{
+  padding:20px;
+  min-height:calc(100vh - 200px);
+}
+
+.btn-primary{
+  margin-top:15px;
+  padding:18px;
+  font-size:18px;
+  font-weight:700;
+  border-radius:14px;
+  background:linear-gradient(90deg,#7c3aed,#2563eb);
+  color:#fff;
+  border:none;
+  cursor:pointer;
+}
+
+.btn-primary:disabled{
+  cursor:wait;
+  opacity:.7;
+}
+
+.error-box{
+  background:#7f1d1d;
+  color:white;
+  padding:18px;
+  border-radius:12px;
+  margin:20px auto;
+  max-width:900px;
+  font-weight:600;
+}
+
+select{
+  width:100%;
+  background:#0f172a;
+  color:white;
+  border:1px solid #334155;
+  border-radius:14px;
+  padding:18px;
+  font-size:16px;
+  margin-top:18px;
+  transition:.3s;
+}
+
+select:focus{
+  outline:none;
+  border-color:var(--primary);
+  box-shadow:0 0 0 4px rgba(124,58,237,.2);
+}
+
+/* Markdown in results */
+.result-card h1,
+.result-card h2,
+.result-card h3{
+  color:#60a5fa;
+  margin-top:20px;
+  margin-bottom:10px;
+}
+
+.result-card p{
+  line-height:1.7;
+  margin-bottom:12px;
+}
+
+.result-card ul,
+.result-card ol{
+  padding-left:24px;
+  margin-bottom:12px;
+}
+
+.result-card li{
+  margin-bottom:6px;
+  line-height:1.6;
+}
+
 @keyframes fadeIn{
 
   from{
