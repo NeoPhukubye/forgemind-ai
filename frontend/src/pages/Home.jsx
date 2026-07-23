@@ -1,7 +1,6 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-import Sidebar from "../components/Sidebar";
 import Hero from "../components/Hero";
 import PromptForm from "../components/PromptForm";
 import DashboardStats from "../components/DashboardStats";
@@ -55,15 +54,15 @@ export default function Home() {
     function handleExample(name, desc) {
         setProjectName(name);
         setDescription(desc);
+        // Scroll to form
+        document.getElementById("prompt-section")?.scrollIntoView({ behavior: "smooth" });
     }
 
     return (
-        <div className="home-layout" style={{ display: "flex", minHeight: "calc(100vh - 80px)" }}>
-            <Sidebar active={activeTab} setActive={setActiveTab} />
+        <main className="home-page">
+            <Hero onExampleClick={handleExample} />
 
-            <main className="home-main" style={{ flex: 1, padding: "40px", overflowY: "auto" }}>
-                <Hero onExampleClick={handleExample} />
-
+            <section className="prompt-section" id="prompt-section">
                 <PromptForm
                     projectName={projectName}
                     description={description}
@@ -72,30 +71,21 @@ export default function Home() {
                     loading={loading}
                     onGenerate={handleGenerate}
                 />
+            </section>
 
-                {loading && <LoadingSpinner />}
+            {loading && <LoadingSpinner />}
 
-                {error && (
-                    <div style={{
-                        background: "#7f1d1d",
-                        color: "white",
-                        padding: "18px",
-                        borderRadius: "12px",
-                        marginTop: "20px",
-                        fontWeight: "600",
-                    }}>
-                        {error}
-                    </div>
-                )}
+            {error && (
+                <div className="error-box">{error}</div>
+            )}
 
-                {!loading && result && (
-                    <>
-                        <DashboardStats result={result} />
-                        <ResultsTabs activeTab={activeTab} setActiveTab={setActiveTab} />
-                        <ArchitectureCard result={result} activeTab={activeTab} />
-                    </>
-                )}
-            </main>
-        </div>
+            {!loading && result && (
+                <section className="results-section">
+                    <DashboardStats result={result} />
+                    <ResultsTabs activeTab={activeTab} setActiveTab={setActiveTab} />
+                    <ArchitectureCard result={result} activeTab={activeTab} />
+                </section>
+            )}
+        </main>
     );
 }
