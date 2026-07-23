@@ -37,69 +37,67 @@ class CodeRequest(BaseModel):
 
 
 @router.post("/architect")
-def architect_plan_post(payload: ArchitectRequest):
-    """
-    Primary endpoint used by the frontend: takes a project name plus a
-    description of what the user wants to build, and returns a real,
-    LLM-generated architecture recommendation.
-    """
-    return architect.generate_architecture(payload.project_name, payload.description)
+async def architect_plan_post(payload: ArchitectRequest):
+    return await architect.generate_architecture(payload.project_name, payload.description)
 
 
 @router.get("/architect/{project_name}")
-def architect_plan_get(project_name: str):
-    """
-    Kept for backwards compatibility / quick manual testing via /docs.
-    Prefer POST /architect with a description for better results.
-    """
-    return architect.generate_architecture(project_name)
+async def architect_plan_get(project_name: str):
+    return await architect.generate_architecture(project_name)
 
 
 @router.post("/planner")
-def planner_post(payload: ProjectRequest):
-    return planner.generate_plan(payload.project_name, payload.description)
+async def planner_post(payload: ProjectRequest):
+    return await planner.generate_plan(payload.project_name, payload.description)
 
 
 @router.post("/coder")
-def coder_post(payload: ProjectRequest):
-    return coder.generate_code(payload.project_name, payload.description, payload.language or "python")
+async def coder_post(payload: ProjectRequest):
+    return await coder.generate_code(payload.project_name, payload.description, payload.language or "python")
 
 
 @router.post("/debugger")
-def debugger_post(payload: CodeRequest):
-    return debugger.debug_code(payload.code, payload.description, payload.language)
+async def debugger_post(payload: CodeRequest):
+    return await debugger.debug_code(payload.code, payload.description, payload.language)
 
 
 @router.post("/tests")
-def tests_post(payload: CodeRequest):
-    return test_generator.generate_tests(payload.code, payload.description, payload.language)
+async def tests_post(payload: CodeRequest):
+    return await test_generator.generate_tests(payload.code, payload.description, payload.language)
 
 
 @router.post("/documentation")
-def documentation_post(payload: CodeRequest):
-    return documentation.generate_docs(payload.project_name, payload.description, payload.code)
+async def documentation_post(payload: CodeRequest):
+    return await documentation.generate_docs(payload.project_name, payload.description, payload.code)
 
 
 @router.get("/dashboard")
-def dashboard_get():
+async def dashboard_get():
     return {
         "project": "ForgeMind AI",
+        "agents": [
+            {"name": "Architect", "endpoint": "/architect", "status": "active"},
+            {"name": "Planner", "endpoint": "/planner", "status": "active"},
+            {"name": "Coder", "endpoint": "/coder", "status": "active"},
+            {"name": "Debugger", "endpoint": "/debugger", "status": "active"},
+            {"name": "Test Generator", "endpoint": "/tests", "status": "active"},
+            {"name": "Documentation", "endpoint": "/documentation", "status": "active"},
+        ],
         "completed": [
             "FastAPI backend",
             "React frontend",
             "Architect Agent",
-            "Swagger API documentation",
-            "AI model integration with Gemma via Fireworks AI",
             "Planner Agent",
             "Coder Agent",
             "Debugger Agent",
             "Test Generator Agent",
             "Documentation Agent",
-            "Docker Compose deployment files",
+            "Docker Compose deployment",
+            "Async LLM integration",
         ],
         "next": [
             "Authentication",
             "Persistent project dashboard",
-            "AMD GPU deployment proof and benchmark notes",
+            "AMD GPU deployment benchmarks",
         ],
     }

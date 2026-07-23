@@ -2,10 +2,10 @@ from app.services.llm_service import LLMServiceError, get_llm_service
 
 
 class DocumentationAgent:
-    def generate_docs(self, project_name: str, description: str = "", code: str = "") -> dict:
+    async def generate_docs(self, project_name: str, description: str = "", code: str = "") -> dict:
         try:
             llm = get_llm_service()
-            content = llm.complete(
+            content = await llm.complete(
                 system_prompt=(
                     "You are ForgeMind AI's Documentation Agent. Create clear developer-facing documentation. "
                     "Use Markdown. Include overview, setup, usage, API notes, and operational caveats where relevant."
