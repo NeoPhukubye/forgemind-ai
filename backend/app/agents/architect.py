@@ -7,17 +7,12 @@ logger = logging.getLogger(__name__)
 
 
 class ArchitectAgent:
-    """
-    Generates a software architecture recommendation for a described project
-    by prompting an LLM (served via Fireworks AI on AMD hardware) and
-    returning structured, validated JSON.
-    """
 
-    def generate_architecture(self, project_name: str, description: str = "") -> dict:
+    async def generate_architecture(self, project_name: str, description: str = "") -> dict:
         llm = get_llm_service()
 
         try:
-            result = llm.complete_json(
+            result = await llm.complete_json(
                 system_prompt=ARCHITECT_SYSTEM_PROMPT,
                 user_prompt=build_architect_user_prompt(project_name, description),
             )
