@@ -1,17 +1,19 @@
 from unittest.mock import AsyncMock, patch
 
 import pytest
+import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
 
 from app.main import app
 
 
-@pytest.fixture
-def client():
-    return AsyncClient(transport=ASGITransport(app=app), base_url="http://test")
+@pytest_asyncio.fixture
+async def client():
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as c:
+        yield c
 
 
-@pytest.mark.anyio
+@pytest.mark.asyncio
 async def test_root(client):
     resp = await client.get("/")
     assert resp.status_code == 200
