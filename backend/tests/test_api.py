@@ -22,7 +22,7 @@ async def test_root(client):
     assert "version" in data
 
 
-@pytest.mark.anyio
+@pytest.mark.asyncio
 async def test_health(client):
     resp = await client.get("/health")
     assert resp.status_code == 200
@@ -31,7 +31,7 @@ async def test_health(client):
     assert data["provider"] == "gemini"
 
 
-@pytest.mark.anyio
+@pytest.mark.asyncio
 async def test_dashboard(client):
     resp = await client.get("/dashboard")
     assert resp.status_code == 200
@@ -40,7 +40,7 @@ async def test_dashboard(client):
     assert len(data["agents"]) == 6
 
 
-@pytest.mark.anyio
+@pytest.mark.asyncio
 @patch("app.agents.architect.get_llm_service")
 async def test_architect_post(mock_llm, client):
     mock_service = AsyncMock()
@@ -67,7 +67,7 @@ async def test_architect_post(mock_llm, client):
     assert data["summary"] == "A test project"
 
 
-@pytest.mark.anyio
+@pytest.mark.asyncio
 @patch("app.agents.planner.get_llm_service")
 async def test_planner_post(mock_llm, client):
     mock_service = AsyncMock()
@@ -84,7 +84,7 @@ async def test_planner_post(mock_llm, client):
     assert "Sprint 1" in data["plan"]
 
 
-@pytest.mark.anyio
+@pytest.mark.asyncio
 @patch("app.agents.generator.get_llm_service")
 async def test_coder_post(mock_llm, client):
     mock_service = AsyncMock()
@@ -101,7 +101,7 @@ async def test_coder_post(mock_llm, client):
     assert "code" in data
 
 
-@pytest.mark.anyio
+@pytest.mark.asyncio
 @patch("app.agents.reviewer.get_llm_service")
 async def test_debugger_post(mock_llm, client):
     mock_service = AsyncMock()
@@ -117,7 +117,7 @@ async def test_debugger_post(mock_llm, client):
     assert "debug_report" in data
 
 
-@pytest.mark.anyio
+@pytest.mark.asyncio
 @patch("app.agents.tester.get_llm_service")
 async def test_tests_post(mock_llm, client):
     mock_service = AsyncMock()
@@ -132,7 +132,7 @@ async def test_tests_post(mock_llm, client):
     assert "tests" in data
 
 
-@pytest.mark.anyio
+@pytest.mark.asyncio
 @patch("app.agents.documentation.get_llm_service")
 async def test_documentation_post(mock_llm, client):
     mock_service = AsyncMock()
@@ -150,13 +150,13 @@ async def test_documentation_post(mock_llm, client):
     assert "documentation" in data
 
 
-@pytest.mark.anyio
+@pytest.mark.asyncio
 async def test_analyze_empty_code(client):
     resp = await client.post("/api/analyze", json={"code": "   "})
     assert resp.status_code == 400
 
 
-@pytest.mark.anyio
+@pytest.mark.asyncio
 async def test_rate_limit(client):
     for _ in range(10):
         await client.post("/architect", json={"project_name": "X"})
