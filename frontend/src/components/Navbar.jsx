@@ -1,11 +1,16 @@
-import {
-    Cpu,
-    Sparkles,
-    Menu,
-    Code2
-} from "lucide-react";
+import { Link } from "react-router-dom";
+import { Cpu, Sparkles } from "lucide-react";
 
-export default function Navbar({ onMenuClick }) {
+const navLinks = [
+    { label: "Architect", to: "/" },
+    { label: "Planner", to: "/planner" },
+    { label: "Coder", to: "/coder" },
+    { label: "Debugger", to: "/debugger" },
+    { label: "Tests", to: "/tester" },
+    { label: "Docs", to: "/docs" },
+];
+
+export default function Navbar() {
     return (
         <nav
             style={{
@@ -28,13 +33,14 @@ export default function Navbar({ onMenuClick }) {
                     padding: "18px 28px",
                 }}
             >
-                {/* Left */}
-                <div
+                <Link
+                    to="/"
                     className="navbar-brand"
                     style={{
                         display: "flex",
                         alignItems: "center",
                         gap: "15px",
+                        textDecoration: "none",
                     }}
                 >
                     <div
@@ -44,83 +50,53 @@ export default function Navbar({ onMenuClick }) {
                             borderRadius: "14px",
                             display: "grid",
                             placeItems: "center",
-                            background:
-                                "linear-gradient(135deg,#7c3aed,#2563eb)",
+                            background: "linear-gradient(135deg,#7c3aed,#2563eb)",
                             flexShrink: 0,
                         }}
                     >
                         <Cpu size={24} color="white" />
                     </div>
-
                     <div>
-                        <h2
-                            style={{
-                                margin: 0,
-                                color: "white",
-                                fontWeight: "800",
-                            }}
-                        >
+                        <h2 style={{ margin: 0, color: "white", fontWeight: "800" }}>
                             ForgeMind AI
                         </h2>
-
-                        <small
-                            style={{
-                                color: "#94a3b8",
-                            }}
-                        >
-                            Enterprise AI Architect
+                        <small style={{ color: "#94a3b8" }}>
+                            Multi-Agent Engineering Assistant
                         </small>
                     </div>
-                </div>
+                </Link>
 
-                {/* Center - hidden on mobile via CSS */}
                 <div
                     className="navbar-center"
                     style={{
                         display: "flex",
-                        gap: "28px",
-                        color: "#cbd5e1",
-                        fontWeight: 600,
-                    }}
-                >
-                    <span style={{ cursor: "pointer" }}>Dashboard</span>
-                    <span style={{ cursor: "pointer" }}>Features</span>
-                    <span style={{ cursor: "pointer" }}>Documentation</span>
-                </div>
-
-                {/* Right */}
-                <div
-                    style={{
-                        display: "flex",
-                        gap: "18px",
+                        gap: "8px",
                         alignItems: "center",
                     }}
                 >
-                    <Sparkles
-                        color="#8b5cf6"
-                        size={22}
-                    />
+                    {navLinks.map((link) => (
+                        <Link
+                            key={link.to}
+                            to={link.to}
+                            style={{
+                                color: "#cbd5e1",
+                                fontWeight: 600,
+                                textDecoration: "none",
+                                padding: "8px 14px",
+                                borderRadius: "8px",
+                                fontSize: "14px",
+                                transition: "background .2s",
+                            }}
+                            onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,.08)")}
+                            onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+                        >
+                            {link.label}
+                        </Link>
+                    ))}
+                </div>
 
-                    <Code2
-                        color="#cbd5e1"
-                        size={22}
-                    />
-
-                    <button
-                        onClick={onMenuClick}
-                        style={{
-                            background: "transparent",
-                            border: "none",
-                            padding: "4px",
-                            margin: 0,
-                            cursor: "pointer",
-                        }}
-                    >
-                        <Menu
-                            color="#cbd5e1"
-                            size={22}
-                        />
-                    </button>
+                <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
+                    <Sparkles color="#8b5cf6" size={22} />
                 </div>
             </div>
         </nav>
