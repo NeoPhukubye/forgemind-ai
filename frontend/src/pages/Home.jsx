@@ -11,7 +11,7 @@ import LoadingSpinner from "../components/LoadingSpinner";
 
 import { generateArchitecture } from "../services/architectService";
 
-export default function Home({ sidebarOpen, setSidebarOpen }) {
+export default function Home() {
     const [projectName, setProjectName] = useState("");
     const [description, setDescription] = useState("");
 
@@ -22,7 +22,6 @@ export default function Home({ sidebarOpen, setSidebarOpen }) {
     const [activeTab, setActiveTab] = useState("architecture");
 
     async function handleGenerate() {
-
         if (!projectName.trim()) {
             toast.error("Please enter a project name.");
             return;
@@ -33,11 +32,7 @@ export default function Home({ sidebarOpen, setSidebarOpen }) {
         setResult(null);
 
         try {
-
-            const data = await generateArchitecture(
-                projectName,
-                description
-            );
+            const data = await generateArchitecture(projectName, description);
 
             if (data.error) {
                 setError(data.error);
@@ -48,21 +43,12 @@ export default function Home({ sidebarOpen, setSidebarOpen }) {
             setResult(data);
             setActiveTab("architecture");
             toast.success("Architecture Generated!");
-
         } catch (err) {
-
             console.error(err);
-
-            setError(
-                "Could not connect to the backend. Is FastAPI running?"
-            );
-
+            setError("Could not connect to the backend. Is FastAPI running?");
             toast.error("Generation Failed");
-
         } finally {
-
             setLoading(false);
-
         }
     }
 
@@ -72,80 +58,44 @@ export default function Home({ sidebarOpen, setSidebarOpen }) {
     }
 
     return (
-        <>
-            <div
-                className="home-layout"
-                style={{
-                    display: "flex",
-                    minHeight: "calc(100vh - 80px)",
-                }}
-            >
-                <Sidebar
-                    active={activeTab}
-                    setActive={setActiveTab}
-                    open={sidebarOpen}
-                    onClose={() => setSidebarOpen(false)}
+        <div className="home-layout" style={{ display: "flex", minHeight: "calc(100vh - 80px)" }}>
+            <Sidebar active={activeTab} setActive={setActiveTab} />
+
+            <main className="home-main" style={{ flex: 1, padding: "40px", overflowY: "auto" }}>
+                <Hero onExampleClick={handleExample} />
+
+                <PromptForm
+                    projectName={projectName}
+                    description={description}
+                    setProjectName={setProjectName}
+                    setDescription={setDescription}
+                    loading={loading}
+                    onGenerate={handleGenerate}
                 />
 
-                <main
-                    className="home-main"
-                    style={{
-                        flex: 1,
-                        padding: "40px",
-                        overflowY: "auto",
-                    }}
-                >
-                    <Hero
-                        onExampleClick={handleExample}
-                    />
+                {loading && <LoadingSpinner />}
 
-                    <PromptForm
-                        projectName={projectName}
-                        description={description}
-                        setProjectName={setProjectName}
-                        setDescription={setDescription}
-                        loading={loading}
-                        onGenerate={handleGenerate}
-                    />
+                {error && (
+                    <div style={{
+                        background: "#7f1d1d",
+                        color: "white",
+                        padding: "18px",
+                        borderRadius: "12px",
+                        marginTop: "20px",
+                        fontWeight: "600",
+                    }}>
+                        {error}
+                    </div>
+                )}
 
-                    {loading && (
-                        <LoadingSpinner />
-                    )}
-
-                    {error && (
-                        <div
-                            style={{
-                                background: "#7f1d1d",
-                                color: "white",
-                                padding: "18px",
-                                borderRadius: "12px",
-                                marginTop: "20px",
-                                fontWeight: "600",
-                            }}
-                        >
-                            {error}
-                        </div>
-                    )}
-
-                    {!loading && result && (
-                        <>
-                            <DashboardStats
-                                result={result}
-                            />
-
-                            <ResultsTabs
-                                activeTab={activeTab}
-                                setActiveTab={setActiveTab}
-                            />
-
-                            <ArchitectureCard
-                                result={result}
-                                activeTab={activeTab}
-                            />
-                        </>
-                    )}
-                </main>
-            </div>
-        </>
+                {!loading && result && (
+                    <>
+                        <DashboardStats result={result} />
+                        <ResultsTabs activeTab={activeTab} setActiveTab={setActiveTab} />
+                        <ArchitectureCard result={result} activeTab={activeTab} />
+                    </>
+                )}
+            </main>
+        </div>
     );
 }
