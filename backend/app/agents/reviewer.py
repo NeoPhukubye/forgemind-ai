@@ -2,10 +2,10 @@ from app.services.llm_service import LLMServiceError, get_llm_service
 
 
 class DebuggerAgent:
-    def debug_code(self, code: str, description: str = "", language: str = "") -> dict:
+    async def debug_code(self, code: str, description: str = "", language: str = "") -> dict:
         try:
             llm = get_llm_service()
-            content = llm.complete(
+            content = await llm.complete(
                 system_prompt=(
                     "You are ForgeMind AI's Debugger Agent. Diagnose bugs, security issues, runtime failures, "
                     "edge cases, and missing tests. Provide concrete fixes and explain the likely root cause."
