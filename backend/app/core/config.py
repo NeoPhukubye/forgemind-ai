@@ -12,6 +12,11 @@ class Settings:
         self.environment = _get_config_value(env_values, "ENVIRONMENT", "development")
         self.gemini_api_key = _get_config_value(env_values, "GEMINI_API_KEY", "")
         self.gemini_model = _get_config_value(env_values, "GEMINI_MODEL", "gemini-2.5-flash")
+        self.secret_key = _get_config_value(
+            env_values,
+            "SECRET_KEY",
+            "your-super-secret-key-change-in-production",
+        )
 
 
 @lru_cache
