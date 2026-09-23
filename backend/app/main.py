@@ -4,13 +4,14 @@ from collections import defaultdict
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel
 from dotenv import load_dotenv
 
 load_dotenv()
 
+from app.api.auth import router as auth_router
 from app.api.routes import router as api_router
 from app.core.config import get_settings
+from app.schemas import CodePayload
 from app.services.security_service import SecurityOrchestrator
 
 app = FastAPI(
@@ -72,10 +73,7 @@ orchestrator = SecurityOrchestrator()
 
 # Register API routes
 app.include_router(api_router)
-
-
-class CodePayload(BaseModel):
-    code: str
+app.include_router(auth_router)
 
 
 @app.get("/")
