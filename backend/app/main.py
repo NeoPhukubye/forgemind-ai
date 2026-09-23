@@ -35,25 +35,51 @@ app.add_middleware(
 
 
 # --- Rate Limiting ---
+# Unauthenticated: 10 requests per minute
+# Authenticated: 100 requests per minute
 RATE_LIMIT_REQUESTS = 10
 RATE_LIMIT_WINDOW = 60  # seconds
+AUTH_RATE_LIMIT_REQUESTS = 100
 _request_counts: dict[str, list[float]] = defaultdict(list)
+_auth_request_counts: dict[str, list[float]] = defaultdict(list)
+
+
+def _get_auth_header(request: Request) -> str | None:
+    """Extract Authorization header from request."""
+    return request.headers.get("Authorization")
 
 
 @app.middleware("http")
 async def rate_limit_middleware(request: Request, call_next):
+    # Skip rate limiting for auth routes (needed to obtain tokens)
+    if request.url.path.startswith("/api/auth"):
+        return await call_next(request)
+
     if request.method == "POST":
         client_ip = request.client.host if request.client else "unknown"
+        auth_header = _get_auth_header(request)
         now = time.time()
-        timestamps = _request_counts[client_ip]
-        # Remove old timestamps outside the window
-        _request_counts[client_ip] = [t for t in timestamps if now - t < RATE_LIMIT_WINDOW]
-        if len(_request_counts[client_ip]) >= RATE_LIMIT_REQUESTS:
-            return JSONResponse(
-                status_code=429,
-                content={"detail": "Rate limit exceeded. Try again later."},
-            )
-        _request_counts[client_ip].append(now)
+
+        if auth_header and auth_header.startswith("Bearer "):
+            # Authenticated user - higher limit
+            timestamps = _auth_request_counts[client_ip]
+            _auth_request_counts[client_ip] = [t for t in timestamps if now - t < RATE_LIMIT_WINDOW]
+            if len(_auth_request_counts[client_ip]) >= AUTH_RATE_LIMIT_REQUESTS:
+                return JSONResponse(
+                    status_code=429,
+                    content={"detail": "Rate limit exceeded. Try again later."},
+                )
+            _auth_request_counts[client_ip].append(now)
+        else:
+            # Unauthenticated user - strict limit
+            timestamps = _request_counts[client_ip]
+            _request_counts[client_ip] = [t for t in timestamps if now - t < RATE_LIMIT_WINDOW]
+            if len(_request_counts[client_ip]) >= RATE_LIMIT_REQUESTS:
+                return JSONResponse(
+                    status_code=429,
+                    content={"detail": "Rate limit exceeded. Try again later."},
+                )
+            _request_counts[client_ip].append(now)
     return await call_next(request)
 
 
