@@ -1,5 +1,4 @@
-from fastapi import APIRouter
-from pydantic import BaseModel
+from fastapi import APIRouter, Depends, HTTPException, status
 
 from app.agents.architect import ArchitectAgent
 from app.agents.documentation import DocumentationAgent
@@ -7,6 +6,15 @@ from app.agents.generator import CoderAgent
 from app.agents.planner import PlannerAgent
 from app.agents.reviewer import DebuggerAgent
 from app.agents.tester import TestGeneratorAgent
+from app.models import UserStore, get_user_store
+from app.schemas import (
+    ArchitectRequest,
+    CodeRequest,
+    CodePayload,
+    ProjectRequest,
+    UserProfile,
+)
+from app.security import get_current_active_user
 
 router = APIRouter()
 
@@ -18,61 +26,66 @@ test_generator = TestGeneratorAgent()
 documentation = DocumentationAgent()
 
 
-class ArchitectRequest(BaseModel):
-    project_name: str
-    description: str = ""
-
-
-class ProjectRequest(BaseModel):
-    project_name: str
-    description: str = ""
-    language: str = ""
-
-
-class CodeRequest(BaseModel):
-    code: str
-    description: str = ""
-    language: str = ""
-    project_name: str = "Untitled Project"
-
-
 @router.post("/architect")
-async def architect_plan_post(payload: ArchitectRequest):
+async def architect_plan_post(
+    payload: ArchitectRequest,
+    current_user: dict = Depends(get_current_active_user),
+):
     return await architect.generate_architecture(payload.project_name, payload.description)
 
 
 @router.get("/architect/{project_name}")
-async def architect_plan_get(project_name: str):
+async def architect_plan_get(
+    project_name: str,
+    current_user: dict = Depends(get_current_active_user),
+):
     return await architect.generate_architecture(project_name)
 
 
 @router.post("/planner")
-async def planner_post(payload: ProjectRequest):
+async def planner_post(
+    payload: ProjectRequest,
+    current_user: dict = Depends(get_current_active_user),
+):
     return await planner.generate_plan(payload.project_name, payload.description)
 
 
 @router.post("/coder")
-async def coder_post(payload: ProjectRequest):
+async def coder_post(
+    payload: ProjectRequest,
+    current_user: dict = Depends(get_current_active_user),
+):
     return await coder.generate_code(payload.project_name, payload.description, payload.language or "python")
 
 
 @router.post("/debugger")
-async def debugger_post(payload: CodeRequest):
+async def debugger_post(
+    payload: CodeRequest,
+    current_user: dict = Depends(get_current_active_user),
+):
     return await debugger.debug_code(payload.code, payload.description, payload.language)
 
 
 @router.post("/tests")
-async def tests_post(payload: CodeRequest):
+async def tests_post(
+    payload: CodeRequest,
+    current_user: dict = Depends(get_current_active_user),
+):
     return await test_generator.generate_tests(payload.code, payload.description, payload.language)
 
 
 @router.post("/documentation")
-async def documentation_post(payload: CodeRequest):
+async def documentation_post(
+    payload: CodeRequest,
+    current_user: dict = Depends(get_current_active_user),
+):
     return await documentation.generate_docs(payload.project_name, payload.description, payload.code)
 
 
 @router.get("/dashboard")
-async def dashboard_get():
+async def dashboard_get(
+    current_user: dict = Depends(get_current_active_user),
+):
     return {
         "project": "ForgeMind AI",
         "agents": [
