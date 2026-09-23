@@ -41,6 +41,18 @@ Built for the **AMD Developer Hackathon: ACT II**, ForgeMind AI leverages a mode
     - Task generation
     - Development roadmap
 
+- 🔐 **OAuth2 JWT Authentication**
+    - Secure password hashing with bcrypt
+    - JWT access & refresh tokens
+    - Role-based access control (RBAC)
+    - Protected API routes
+
+- 🛡️ **Input Validation & Security**
+    - Pydantic request validation
+    - Control character sanitization
+    - Rate limiting (10 req/min unauthenticated, 100 req/min authenticated)
+    - CORS hardening
+
 ---
 
 # 🏛️ Architecture
@@ -77,6 +89,17 @@ Built for the **AMD Developer Hackathon: ACT II**, ForgeMind AI leverages a mode
 - FastAPI
 - Python
 - Uvicorn
+- Pydantic (input validation)
+- Passlib + Bcrypt (password hashing)
+- Python-Jose (JWT tokens)
+
+### Security
+
+- OAuth2 JWT Authentication
+- Role-Based Access Control (RBAC)
+- Pydantic Input Validation
+- Rate Limiting Middleware
+- CORS Hardening
 
 ### AI
 
@@ -165,9 +188,9 @@ pip install -r requirements.txt
 Create `backend/.env` from the project root or `.env` from inside `backend/`:
 
 ```env
-FIREWORKS_API_KEY=your_real_fireworks_api_key
-FIREWORKS_BASE_URL=https://api.fireworks.ai/inference/v1
-FIREWORKS_MODEL=accounts/fireworks/models/gemma-3-12b-it
+GEMINI_API_KEY=your_real_gemini_api_key
+GEMINI_MODEL=gemini-2.5-flash
+SECRET_KEY=your-super-secret-key-change-in-production
 ENVIRONMENT=development
 ```
 
@@ -228,13 +251,17 @@ Returns the application status.
 ## Architect Agent
 
 ```
+POST /architect
 GET /architect/{project_name}
 ```
+
+*Requires authentication*
 
 Example
 
 ```
-GET /architect/FoodDeliveryApp
+POST /architect
+Authorization: Bearer <token>
 ```
 
 Example Response
@@ -255,6 +282,64 @@ Example Response
 
 ---
 
+## 🔐 Authentication
+
+### Login
+
+```
+POST /api/auth/login
+```
+
+Returns JWT access token and refresh token.
+
+Example
+
+```
+POST /api/auth/login
+Content-Type: application/x-www-form-urlencoded
+
+username=admin@forgemind.ai&password=admin123
+```
+
+Example Response
+
+```json
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "token_type": "Bearer",
+  "expires_in": 1800
+}
+```
+
+### Register
+
+```
+POST /api/auth/register
+```
+
+Create a new user account.
+
+### Refresh Token
+
+```
+POST /api/auth/refresh
+```
+
+Get a new access token using a valid refresh token.
+
+### Get Profile
+
+```
+GET /api/auth/me
+```
+
+Get the current authenticated user's profile.
+
+*All agent endpoints require authentication via `Authorization: Bearer <token>` header.*
+
+---
+
 # 🎯 Roadmap
 
 - [x] FastAPI backend
@@ -268,9 +353,11 @@ Example Response
 - [x] Documentation Agent
 - [x] Planner Agent
 - [x] Docker deployment
+- [x] OAuth2 JWT Authentication
+- [x] Input Validation (Pydantic)
+- [x] Rate Limiting
 - [ ] AMD GPU optimization notes and benchmarks
-- [ ] Authentication
-- [ ] Project dashboard
+- [ ] Persistent project dashboard
 
 ---
 
