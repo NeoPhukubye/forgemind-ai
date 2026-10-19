@@ -111,12 +111,12 @@ app.include_router(auth_router)
 async def root():
     return {
         "name": "ForgeMind AI",
-        "version": "2.0.0",
+        "version": "2.1.0",
         "message": "Backend is running successfully!",
     }
 
 
-@app.get("/health")
+@app.get("/health", tags=["system"])
 async def health():
     settings = get_settings()
     return {
@@ -124,6 +124,7 @@ async def health():
         "environment": settings.environment,
         "provider": "gemini",
         "model": settings.gemini_model,
+        "version": "2.1.0",
     }
 
 
