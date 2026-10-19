@@ -17,6 +17,14 @@ class Settings:
             "SECRET_KEY",
             "your-super-secret-key-change-in-production",
         )
+        self.app_name = "ForgeMind AI"
+        self.app_version = "2.1.0"
+        self.access_token_expire_minutes = int(
+            _get_config_value(env_values, "ACCESS_TOKEN_EXPIRE_MINUTES", "30")
+        )
+        self.refresh_token_expire_days = int(
+            _get_config_value(env_values, "REFRESH_TOKEN_EXPIRE_DAYS", "7")
+        )
 
 
 @lru_cache
