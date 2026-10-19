@@ -16,7 +16,7 @@ from app.schemas import (
 )
 from app.security import get_current_active_user
 
-router = APIRouter()
+router = APIRouter(tags=["agents", "system"])
 
 architect = ArchitectAgent()
 planner = PlannerAgent()
