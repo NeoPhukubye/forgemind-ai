@@ -197,7 +197,7 @@ class UserProfile(BaseModel):
     is_active: bool = True
     created_at: Optional[str] = None
 
-    model_config = {"from_attributes": True}
+    model_config = {"from_attributes": True, "json_schema_extra": {"example": {"id": 1, "username": "admin", "email": "admin@forgemind.ai", "role": "admin", "is_active": True, "created_at": "2026-01-01T00:00:00"}}}
 
 
 class UserResponse(BaseModel):
@@ -208,4 +208,4 @@ class UserResponse(BaseModel):
     email: str
     role: UserRole
 
-    model_config = {"from_attributes": True}
+    model_config = {"from_attributes": True, "json_schema_extra": {"example": {"id": 1, "username": "newuser", "email": "newuser@test.com", "role": "standard"}}}
