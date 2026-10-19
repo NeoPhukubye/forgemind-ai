@@ -16,8 +16,13 @@ from app.services.security_service import SecurityOrchestrator
 
 app = FastAPI(
     title="ForgeMind AI",
-    description="Multi-agent AI software engineering assistant",
-    version="2.0.0",
+    description="Multi-agent AI software engineering assistant with authentication, agents, and security features",
+    version="2.1.0",
+    openapi_tags=[
+        {"name": "authentication", "description": "User authentication and token management"},
+        {"name": "agents", "description": "Multi-agent AI endpoints"},
+        {"name": "system", "description": "System health and information"},
+    ],
 )
 
 # CORS
