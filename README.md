@@ -4,7 +4,7 @@ WTC-BAQWWYFA
 
 **ForgeMind AI** is an intelligent multi-agent software engineering assistant designed to help developers plan, design, build, test, and document software projects using Artificial Intelligence.
 
-Built for the **AMD Developer Hackathon: ACT II**, ForgeMind AI leverages a modern full-stack architecture with **FastAPI**, **React**, and AI-powered agents capable of generating software architectures, development plans, documentation, and code.
+**Version:** 2.1.0 | Built for the **AMD Developer Hackathon: ACT II** | [Live Demo](https://neophukubye.github.io/forgemind-ai/) | [Backend API](https://forgemind-ai.onrender.com)
 
 ---
 
